@@ -202,7 +202,10 @@ const Swiper = () => {
     : categories;
 
   return (
-    <section className="category-swiper-section">
+    <section className="category-swiper-section ">
+      <div  class="container-fluid">
+        <div class="row">
+          <div class="col-sm-11 mx-auto overflow-hidden">
       <div className="container-fluid cat-swiper-outer">
         {/* Header Section */}
         <div className="cat-header-row mb-4 pb-2">
@@ -309,6 +312,8 @@ const Swiper = () => {
                   : fallbackAsset;
 
                 return (
+                  <div class="row">
+                    <div class="col-sm-11 mx-auto">
                   <SwiperSlide key={`${cat._id || cat.id || 'cat'}-${index}`}>
                     <div
                       className="cat-card w-100"
@@ -342,11 +347,17 @@ const Swiper = () => {
                       </div>
                     </div>
                   </SwiperSlide>
+                  </div>
+                  </div>
+                
                 );
               })}
             </SwiperReact>
           </div>
         )}
+      </div>
+      </div>
+      </div>
       </div>
     </section>
   );
