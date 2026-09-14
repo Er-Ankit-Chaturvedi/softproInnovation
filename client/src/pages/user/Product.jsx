@@ -204,7 +204,7 @@ const Product = () => {
   }, [allProductsList, selectedCategory, searchTerm, sortBy])
 
   const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage, setItemsPerPage] = useState(12)
+  const [itemsPerPage, setItemsPerPage] = useState(5)
 
   // Reset page when filters, sorting or itemsPerPage change
   useEffect(() => {
@@ -415,6 +415,7 @@ const Product = () => {
                   onChange={(e) => setItemsPerPage(Number(e.target.value))}
                   style={{ minWidth: '105px' }}
                 >
+                  <option value={5}>5 / page</option>
                   <option value={8}>8 / page</option>
                   <option value={12}>12 / page</option>
                   <option value={24}>24 / page</option>
@@ -606,7 +607,7 @@ const Product = () => {
               return (
                 <div key={pId} className="col-12 col-sm-6 col-md-6 col-lg-3">
                   <div
-                    className="card h-100 overflow-hidden shadow-sm position-relative border-0 rounded-4"
+                    className="card h-100 overflow-hidden shadow-sm position-relative border-0 rounded-3"
                     style={{ transition: 'transform 0.3s ease, box-shadow 0.3s ease' }}
                     onMouseEnter={(e) => {
                       e.currentTarget.style.transform = 'translateY(-8px)'

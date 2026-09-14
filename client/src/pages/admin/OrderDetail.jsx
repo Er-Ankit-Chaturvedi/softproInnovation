@@ -3,7 +3,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE_URL } from '../../config/api';
 import { formatImg } from '../../utils/imageUrl';
-import logo from '../../assets/logo.png';
+import InvoiceBill from '../../components/InvoiceBill';
 import './OrderDetail.css';
 
 const OrderDetail = () => {
@@ -97,28 +97,6 @@ const OrderDetail = () => {
     setTimeout(() => setCopiedOrderId(false), 2000);
   };
 
-  const numberToWords = (num) => {
-    const a = [
-      '', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine',
-      'Ten', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen',
-      'Seventeen', 'Eighteen', 'Nineteen'
-    ];
-    const b = ['', '', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
-
-    const n = Math.round(Number(num) || 0);
-    if (n === 0) return 'Zero Rupees Only';
-
-    const inWords = (val) => {
-      if (val < 20) return a[val];
-      if (val < 100) return b[Math.floor(val / 10)] + (val % 10 !== 0 ? ' ' + a[val % 10] : '');
-      if (val < 1000) return a[Math.floor(val / 100)] + ' Hundred' + (val % 100 !== 0 ? ' and ' + inWords(val % 100) : '');
-      if (val < 100000) return inWords(Math.floor(val / 1000)) + ' Thousand' + (val % 1000 !== 0 ? ' ' + inWords(val % 1000) : '');
-      if (val < 10000000) return inWords(Math.floor(val / 100000)) + ' Lakh' + (val % 100000 !== 0 ? ' ' + inWords(val % 100000) : '');
-      return inWords(Math.floor(val / 10000000)) + ' Crore' + (val % 10000000 !== 0 ? ' ' + inWords(val % 10000000) : '');
-    };
-
-    return `${inWords(n).trim()} Rupees Only`;
-  };
 
   if (loading) {
     return (
@@ -299,10 +277,10 @@ const OrderDetail = () => {
             type="button"
             className="btn btn-white border px-3 py-2 fw-semibold shadow-xs d-inline-flex align-items-center gap-2"
             style={{ borderRadius: '10px', backgroundColor: '#ffffff', color: '#1d4ed8', borderColor: '#bfdbfe', fontSize: '13.5px' }}
-            onClick={() => setShowInvoicePreview(true)}
-            title="Preview Clean Tax Invoice"
+            onClick={() => navigate(`/dashboard/invoice-preview/${id}`)}
+            title="Open Full Professional GST Invoice Preview"
           >
-            <i className="bi bi-eye text-primary"></i>
+            <i className="bi bi-file-earmark-text text-primary"></i>
             <span>Preview Invoice</span>
           </button>
 
@@ -885,360 +863,19 @@ const OrderDetail = () => {
 
             <div className="inv-preview-scroll">
               <div className="inv-preview-paper">
-                {/* Embedded Printable Invoice Body */}
-                <div className="od-printable-invoice" style={{ display: 'block' }}>
-                  {/* Top Header */}
-                  <div className="inv-header">
-                    <div className="inv-brand">
-                      <div className="inv-logo-box">
-                        <img src={logo} alt="SoftPro Innovation Logo" className="inv-logo-img" />
-                        <div>
-                          <h2 className="inv-company-title">SOFTPRO INNOVATION</h2>
-                          <p className="inv-company-tagline">Electronics, IoT Kits & Embedded Solutions</p>
-                        </div>
-                      </div>
-                      <div className="inv-company-info">
-                        <p>123 Tech Hub, Innovation Park, Lucknow, UP &ndash; 226028</p>
-                        <p>Email: support@softproinnovation.com &bull; Web: www.softproinnovation.com</p>
-                        <p>Helpline: +91 92192 35951</p>
-                      </div>
-                    </div>
-
-                    <div className="inv-meta">
-                      <div className="inv-badge-title">TAX INVOICE</div>
-                      <table className="inv-meta-table">
-                        <tbody>
-                          <tr>
-                            <td className="inv-meta-lbl">Invoice / Order ID:</td>
-                            <td className="inv-meta-val">{orderId}</td>
-                          </tr>
-                          <tr>
-                            <td className="inv-meta-lbl">Order Date:</td>
-                            <td className="inv-meta-val">{orderDate}</td>
-                          </tr>
-                          <tr>
-                            <td className="inv-meta-lbl">Payment Mode:</td>
-                            <td className="inv-meta-val text-uppercase">{paymentMethod}</td>
-                          </tr>
-                          <tr>
-                            <td className="inv-meta-lbl">Payment Status:</td>
-                            <td className="inv-meta-val text-uppercase" style={{ color: paymentStatus === 'paid' ? '#16a34a' : '#d97706' }}>
-                              {paymentStatus}
-                            </td>
-                          </tr>
-                          <tr>
-                            <td className="inv-meta-lbl">Fulfillment:</td>
-                            <td className="inv-meta-val text-uppercase" style={{ color: '#2563eb' }}>
-                              {orderStatus}
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
-                  <div className="inv-divider-line"></div>
-
-                  {/* Customer & Shipping Addresses */}
-                  <div className="inv-address-grid">
-                    <div className="inv-address-card">
-                      <div className="inv-address-heading">
-                        <i className="bi bi-person-fill me-1"></i> Billed To (Customer Details)
-                      </div>
-                      <div className="inv-address-name">{customerName}</div>
-                      <div className="inv-address-line">
-                        <div><strong>Mobile:</strong> {customerMobile}</div>
-                        <div><strong>Email:</strong> {customerEmail}</div>
-                      </div>
-                    </div>
-
-                    <div className="inv-address-card">
-                      <div className="inv-address-heading">
-                        <i className="bi bi-geo-alt-fill me-1"></i> Shipped & Delivered To
-                      </div>
-                      <div className="inv-address-name">{order.address?.name || customerName}</div>
-                      <div className="inv-address-line">
-                        <div><strong>Contact:</strong> {order.address?.mobile || customerMobile}</div>
-                        <div>
-                          {order.address?.address}{order.address?.locality ? `, ${order.address.locality}` : ''}
-                          {order.address?.landmark ? `, Near ${order.address.landmark}` : ''}
-                        </div>
-                        <div>
-                          <strong>{order.address?.city}</strong>, {order.address?.state} &ndash; <strong>{order.address?.pincode}</strong>
-                        </div>
-                        <div className="text-muted small">Destination: {order.address?.addressType || 'Home'}</div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Products Table */}
-                  <table className="inv-items-table">
-                    <thead>
-                      <tr>
-                        <th style={{ width: '6%' }} className="text-center">#</th>
-                        <th style={{ width: '50%' }}>Description of Components / Goods</th>
-                        <th style={{ width: '16%' }} className="text-center">Rate (₹)</th>
-                        <th style={{ width: '12%' }} className="text-center">Qty</th>
-                        <th style={{ width: '16%' }} className="text-end">Amount (₹)</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {(order.items || []).map((item, idx) => {
-                        const unitPrice = Number(item.price || 0);
-                        const qty = Number(item.quantity || 1);
-                        const lineTotal = Number(item.total || unitPrice * qty);
-                        return (
-                          <tr key={idx}>
-                            <td className="text-center fw-semibold text-muted">{idx + 1}</td>
-                            <td>
-                              <div className="inv-product-title">{item.name}</div>
-                              {item.category && <span className="inv-product-cat">{item.category}</span>}
-                            </td>
-                            <td className="text-center">₹{unitPrice.toLocaleString('en-IN')}</td>
-                            <td className="text-center fw-bold">{qty}</td>
-                            <td className="text-end fw-bold">₹{lineTotal.toLocaleString('en-IN')}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-
-                  {/* Calculations */}
-                  <div className="inv-calc-grid">
-                    <div className="inv-words-panel">
-                      <div className="inv-words-label">Invoice Value in Words:</div>
-                      <div className="inv-words-content">{numberToWords(order.totalAmount || 0)}</div>
-
-                      <ol className="inv-policy-list">
-                        <li>Goods covered under 7-Day Replacement Guarantee against manufacturing defects.</li>
-                        <li>Damage due to electrical surge, reverse voltage, or physical misuse is excluded.</li>
-                        <li>All legal matters subject to Lucknow jurisdiction only.</li>
-                      </ol>
-                    </div>
-
-                    <div>
-                      <table className="inv-totals-table">
-                        <tbody>
-                          <tr>
-                            <td className="inv-tot-label">Items Subtotal:</td>
-                            <td className="inv-tot-val">₹{Number(order.subtotal || order.totalAmount || 0).toLocaleString('en-IN')}</td>
-                          </tr>
-                          <tr>
-                            <td className="inv-tot-label">Shipping & Delivery:</td>
-                            <td className="inv-tot-val">
-                              {Number(order.fee) > 0 ? `₹${Number(order.fee).toLocaleString('en-IN')}` : 'FREE'}
-                            </td>
-                          </tr>
-                          {Number(order.discount) > 0 && (
-                            <tr>
-                              <td className="inv-tot-label text-danger">Discount Voucher:</td>
-                              <td className="inv-tot-val text-danger">- ₹{Number(order.discount).toLocaleString('en-IN')}</td>
-                            </tr>
-                          )}
-                          <tr className="inv-grand-row">
-                            <td>Grand Total:</td>
-                            <td className="inv-tot-val">₹{Number(order.totalAmount || 0).toLocaleString('en-IN')}</td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </div>
-                  </div>
-
-                  {/* Signatory & Authentication */}
-                  <div className="inv-sign-grid">
-                    <div className="inv-gen-notice">
-                      <i className="bi bi-shield-check text-success me-1"></i>
-                      This is an electronically generated official Tax Invoice from Softpro Innovation. No physical stamp or signature is required.
-                    </div>
-                    <div className="inv-sign-block">
-                      <div className="inv-seal-badge">
-                        <i className="bi bi-check2-all me-1"></i> VERIFIED & AUTHENTIC
-                      </div>
-                      <div className="inv-sign-corp">For SoftPro Innovation</div>
-                      <div className="inv-sign-text">Authorized Signatory</div>
-                    </div>
-                  </div>
-                </div>
+                <InvoiceBill order={order} id="tax-invoice-bill" />
               </div>
             </div>
           </div>
         </div>
       )}
 
-      {/* Standalone Printable Invoice rendered specifically for @media print */}
-      <div className="od-printable-invoice">
-        {/* Top Header */}
-        <div className="inv-header">
-          <div className="inv-brand">
-            <div className="inv-logo-box">
-              <img src={logo} alt="SoftPro Innovation Logo" className="inv-logo-img" />
-              <div>
-                <h2 className="inv-company-title">SOFTPRO INNOVATION</h2>
-                <p className="inv-company-tagline">Electronics, IoT Kits & Embedded Solutions</p>
-              </div>
-            </div>
-            <div className="inv-company-info">
-              <p>123 Tech Hub, Innovation Park, Lucknow, UP &ndash; 226028</p>
-              <p>Email: support@softproinnovation.com &bull; Web: www.softproinnovation.com</p>
-              <p>Helpline: +91 92192 35951</p>
-            </div>
-          </div>
-
-          <div className="inv-meta">
-            <div className="inv-badge-title">TAX INVOICE</div>
-            <table className="inv-meta-table">
-              <tbody>
-                <tr>
-                  <td className="inv-meta-lbl">Invoice / Order ID:</td>
-                  <td className="inv-meta-val">{orderId}</td>
-                </tr>
-                <tr>
-                  <td className="inv-meta-lbl">Order Date:</td>
-                  <td className="inv-meta-val">{orderDate}</td>
-                </tr>
-                <tr>
-                  <td className="inv-meta-lbl">Payment Mode:</td>
-                  <td className="inv-meta-val text-uppercase">{paymentMethod}</td>
-                </tr>
-                <tr>
-                  <td className="inv-meta-lbl">Payment Status:</td>
-                  <td className="inv-meta-val text-uppercase" style={{ color: paymentStatus === 'paid' ? '#16a34a' : '#d97706' }}>
-                    {paymentStatus}
-                  </td>
-                </tr>
-                <tr>
-                  <td className="inv-meta-lbl">Fulfillment:</td>
-                  <td className="inv-meta-val text-uppercase" style={{ color: '#2563eb' }}>
-                    {orderStatus}
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+      {/* Standalone Printable Invoice rendered for @media print when preview is closed */}
+      {!showInvoicePreview && (
+        <div className="od-printable-invoice-wrapper">
+          <InvoiceBill order={order} id="tax-invoice-bill" />
         </div>
-
-        <div className="inv-divider-line"></div>
-
-        {/* Customer & Shipping Addresses */}
-        <div className="inv-address-grid">
-          <div className="inv-address-card">
-            <div className="inv-address-heading">
-              <i className="bi bi-person-fill me-1"></i> Billed To (Customer Details)
-            </div>
-            <div className="inv-address-name">{customerName}</div>
-            <div className="inv-address-line">
-              <div><strong>Mobile:</strong> {customerMobile}</div>
-              <div><strong>Email:</strong> {customerEmail}</div>
-            </div>
-          </div>
-
-          <div className="inv-address-card">
-            <div className="inv-address-heading">
-              <i className="bi bi-geo-alt-fill me-1"></i> Shipped & Delivered To
-            </div>
-            <div className="inv-address-name">{order.address?.name || customerName}</div>
-            <div className="inv-address-line">
-              <div><strong>Contact:</strong> {order.address?.mobile || customerMobile}</div>
-              <div>
-                {order.address?.address}{order.address?.locality ? `, ${order.address.locality}` : ''}
-                {order.address?.landmark ? `, Near ${order.address.landmark}` : ''}
-              </div>
-              <div>
-                <strong>{order.address?.city}</strong>, {order.address?.state} &ndash; <strong>{order.address?.pincode}</strong>
-              </div>
-              <div className="text-muted small">Destination: {order.address?.addressType || 'Home'}</div>
-            </div>
-          </div>
-        </div>
-
-        {/* Products Table */}
-        <table className="inv-items-table">
-          <thead>
-            <tr>
-              <th style={{ width: '6%' }} className="text-center">#</th>
-              <th style={{ width: '50%' }}>Description of Components / Goods</th>
-              <th style={{ width: '16%' }} className="text-center">Rate (₹)</th>
-              <th style={{ width: '12%' }} className="text-center">Qty</th>
-              <th style={{ width: '16%' }} className="text-end">Amount (₹)</th>
-            </tr>
-          </thead>
-          <tbody>
-            {(order.items || []).map((item, idx) => {
-              const unitPrice = Number(item.price || 0);
-              const qty = Number(item.quantity || 1);
-              const lineTotal = Number(item.total || unitPrice * qty);
-              return (
-                <tr key={idx}>
-                  <td className="text-center fw-semibold text-muted">{idx + 1}</td>
-                  <td>
-                    <div className="inv-product-title">{item.name}</div>
-                    {item.category && <span className="inv-product-cat">{item.category}</span>}
-                  </td>
-                  <td className="text-center">₹{unitPrice.toLocaleString('en-IN')}</td>
-                  <td className="text-center fw-bold">{qty}</td>
-                  <td className="text-end fw-bold">₹{lineTotal.toLocaleString('en-IN')}</td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-
-        {/* Calculations */}
-        <div className="inv-calc-grid">
-          <div className="inv-words-panel">
-            <div className="inv-words-label">Invoice Value in Words:</div>
-            <div className="inv-words-content">{numberToWords(order.totalAmount || 0)}</div>
-
-            <ol className="inv-policy-list">
-              <li>Goods covered under 7-Day Replacement Guarantee against manufacturing defects.</li>
-              <li>Damage due to electrical surge, reverse voltage, or physical misuse is excluded.</li>
-              <li>All legal matters subject to Lucknow jurisdiction only.</li>
-            </ol>
-          </div>
-
-          <div>
-            <table className="inv-totals-table">
-              <tbody>
-                <tr>
-                  <td className="inv-tot-label">Items Subtotal:</td>
-                  <td className="inv-tot-val">₹{Number(order.subtotal || order.totalAmount || 0).toLocaleString('en-IN')}</td>
-                </tr>
-                <tr>
-                  <td className="inv-tot-label">Shipping & Delivery:</td>
-                  <td className="inv-tot-val">
-                    {Number(order.fee) > 0 ? `₹${Number(order.fee).toLocaleString('en-IN')}` : 'FREE'}
-                  </td>
-                </tr>
-                {Number(order.discount) > 0 && (
-                  <tr>
-                    <td className="inv-tot-label text-danger">Discount Voucher:</td>
-                    <td className="inv-tot-val text-danger">- ₹{Number(order.discount).toLocaleString('en-IN')}</td>
-                  </tr>
-                )}
-                <tr className="inv-grand-row">
-                  <td>Grand Total:</td>
-                  <td className="inv-tot-val">₹{Number(order.totalAmount || 0).toLocaleString('en-IN')}</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-
-        {/* Signatory & Authentication */}
-        <div className="inv-sign-grid">
-          <div className="inv-gen-notice">
-            <i className="bi bi-shield-check text-success me-1"></i>
-            This is an electronically generated official Tax Invoice from Softpro Innovation. No physical stamp or signature is required.
-          </div>
-          <div className="inv-sign-block">
-            <div className="inv-seal-badge">
-              <i className="bi bi-check2-all me-1"></i> VERIFIED & AUTHENTIC
-            </div>
-            <div className="inv-sign-corp">For SoftPro Innovation</div>
-            <div className="inv-sign-text">Authorized Signatory</div>
-          </div>
-        </div>
-      </div>
+      )}
     </div>
   );
 };

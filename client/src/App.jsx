@@ -18,6 +18,8 @@ import OrderDetail from './pages/admin/OrderDetail'
 import UsersList from './pages/admin/UsersList'
 import Inventory from './pages/admin/Inventory'
 import Complaints from './pages/admin/Complaints'
+import InvoicePreview from './pages/admin/InvoicePreview'
+import AdminAddresses from './pages/admin/Addresses'
 import { CartProvider } from './context/CartContext'
 
 import AdminLogin from './pages/admin/AdminLogin'
@@ -67,8 +69,12 @@ export const App = () => {
             <Route path='products/edit/:id' element={<AddProduct isEditMode={true} />} />
             <Route path='orders' element={<Orders />} />
             <Route path='orders/:id' element={<OrderDetail />} />
+            <Route path='invoices' element={<InvoicePreview />} />
+            <Route path='invoice-preview' element={<InvoicePreview />} />
+            <Route path='invoice-preview/:id' element={<InvoicePreview />} />
             <Route path='users' element={<UsersList />} />
             <Route path='inventory' element={<Inventory />} />
+            <Route path='addresses' element={<AdminAddresses />} />
             <Route path='complaints' element={<Complaints />} />
           </Route>
           <Route path='/admin/login' element={<AdminLogin/>} />

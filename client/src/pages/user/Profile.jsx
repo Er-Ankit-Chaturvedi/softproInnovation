@@ -5,6 +5,7 @@ import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { API_BASE_URL } from '../../config/api';
 import { formatImg } from '../../utils/imageUrl';
+import InvoiceBill from '../../components/InvoiceBill';
 
 const Profile = () => {
   const navigate = useNavigate();
@@ -1173,15 +1174,30 @@ const Profile = () => {
                                 )}
                               </div>
 
-                              <button
-                                type="button"
-                                className="btn btn-sm btn-primary rounded-pill px-3.5 py-1.5 fw-semibold d-inline-flex align-items-center gap-1.5"
-                                style={{ backgroundColor: '#3945E0', border: 'none' }}
-                                onClick={() => setTrackingOrder(order)}
-                              >
-                                <i className="bi bi-radar"></i>
-                                <span>Track & View Details</span>
-                              </button>
+                              <div className="d-flex align-items-center gap-2">
+                                <button
+                                  type="button"
+                                  className="btn btn-sm btn-outline-secondary rounded-pill px-3 py-1.5 fw-semibold d-inline-flex align-items-center gap-1.5"
+                                  onClick={() => {
+                                    setTrackingOrder(order);
+                                    setTimeout(() => window.print(), 120);
+                                  }}
+                                  title="Print Official Tax Invoice Bill"
+                                >
+                                  <i className="bi bi-printer text-primary"></i>
+                                  <span>Invoice Bill</span>
+                                </button>
+
+                                <button
+                                  type="button"
+                                  className="btn btn-sm btn-primary rounded-pill px-3.5 py-1.5 fw-semibold d-inline-flex align-items-center gap-1.5"
+                                  style={{ backgroundColor: '#3945E0', border: 'none' }}
+                                  onClick={() => setTrackingOrder(order)}
+                                >
+                                  <i className="bi bi-radar"></i>
+                                  <span>Track & View Details</span>
+                                </button>
+                              </div>
                             </div>
                           </div>
                         );
@@ -1693,9 +1709,10 @@ const Profile = () => {
                   type="button"
                   className="btn btn-outline-secondary rounded-pill px-3.5 py-1.5 fw-semibold small d-inline-flex align-items-center gap-1.5"
                   onClick={() => window.print()}
+                  title="Print Official Tax Invoice Bill"
                 >
                   <i className="bi bi-printer"></i>
-                  <span>Print Receipt</span>
+                  <span>Print Tax Invoice</span>
                 </button>
 
                 <button
@@ -1709,6 +1726,13 @@ const Profile = () => {
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Standalone Printable Invoice rendered exclusively for @media print */}
+      {trackingOrder && (
+        <div className="user-printable-bill-wrapper">
+          <InvoiceBill order={trackingOrder} id="tax-invoice-bill" />
         </div>
       )}
 

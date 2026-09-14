@@ -11,32 +11,142 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/autoplay';
 
-import img1 from '../assets/1.avif';
-import img2 from '../assets/2.png';
-import img3 from '../assets/3.png';
-import img4 from '../assets/4.png';
-import img5 from '../assets/5.png';
-import img6 from '../assets/6.png';
-import img7 from '../assets/7.png';
-import img8 from '../assets/8.png';
-import img9 from '../assets/9.png';
-import img10 from '../assets/10.png';
+// Pristine assets tailored to category families
+import imgCommunication from '../assets/cat-communication.png';
+import imgMotors from '../assets/cat-motors.png';
+import imgIndicators from '../assets/cat-indicators.png';
+import imgSensors from '../assets/cat-sensors.png';
+import imgMicrocontrollers from '../assets/cat-microcontrollers.png';
+import imgPower from '../assets/cat-power.png';
+import imgIot from '../assets/cat-iot.png';
 
-const fallbackImages = [img1, img2, img3, img4, img5, img6, img7, img8, img9, img10];
+const categoryAssetMap = {
+  communication: imgCommunication,
+  wireless: imgCommunication,
+  bluetooth: imgCommunication,
+  wifi: imgCommunication,
+  gsm: imgCommunication,
+  motor: imgMotors,
+  actuator: imgMotors,
+  indicator: imgIndicators,
+  display: imgIndicators,
+  screen: imgIndicators,
+  oled: imgIndicators,
+  lcd: imgIndicators,
+  sensor: imgSensors,
+  sensors: imgSensors,
+  microcontroller: imgMicrocontrollers,
+  mcu: imgMicrocontrollers,
+  board: imgMicrocontrollers,
+  arduino: imgMicrocontrollers,
+  raspberry: imgMicrocontrollers,
+  power: imgPower,
+  battery: imgPower,
+  supply: imgPower,
+  iot: imgIot,
+  kit: imgIot,
+};
 
-const fallbackCategories = [
-  { _id: 'c1', category: 'Microcontrollers & Development Boards', image: img1, productCount: 14 },
-  { _id: 'c2', category: 'Sensor', image: img2, productCount: 14 },
-  { _id: 'c3', category: 'Displays & Indicators', image: img3, productCount: 6 },
-  { _id: 'c4', category: 'Actuators & Motors', image: img4, productCount: 16 },
-  { _id: 'c5', category: 'Power & Battery Components', image: img5, productCount: 12 },
-  { _id: 'c6', category: 'Wireless & Communication Modules', image: img6, productCount: 10 },
-  { _id: 'c7', category: 'IoT KIT', image: img7, productCount: 8 }
+const getMatchedAsset = (catName) => {
+  const n = (catName || '').toLowerCase();
+  for (const [key, img] of Object.entries(categoryAssetMap)) {
+    if (n.includes(key)) return img;
+  }
+  return imgMicrocontrollers;
+};
+
+// Clean display title matching the user design specification
+const getCategoryDisplayTitle = (rawName) => {
+  const n = (rawName || '').trim().toLowerCase();
+  if (n.includes('communication') || n.includes('wireless')) return 'Communication Modules';
+  if (n.includes('motor') || n.includes('actuator')) return 'Motors';
+  if (n.includes('display') || n.includes('indicator')) return 'Indicators';
+  if (n === 'sensor' || n === 'sensors') return 'Sensors';
+  if (n.includes('microcontroller') || n.includes('development board')) return 'Microcontrollers';
+  if (n.includes('power') || n.includes('battery')) return 'Power & Batteries';
+  if (n.includes('iot') || n.includes('kit')) return 'IoT Kits';
+  return rawName || 'Category';
+};
+
+// Rich curated descriptions matching the user reference screenshot
+const getCategoryDescription = (rawName, customDesc) => {
+  if (customDesc && !customDesc.toLowerCase().endsWith('- iot products') && customDesc.trim().length > 15) {
+    return customDesc.trim();
+  }
+  const n = (rawName || '').trim().toLowerCase();
+  if (n.includes('communication') || n.includes('wireless')) {
+    return 'Wireless and wired modules for Bluetooth, Wi-Fi, GSM, GPS, and serial communication.';
+  }
+  if (n.includes('motor') || n.includes('actuator')) {
+    return 'Motors and motor accessories for movement, rotation, robotics, and automation projects.';
+  }
+  if (n.includes('display') || n.includes('indicator') || n.includes('screen') || n.includes('oled') || n.includes('lcd')) {
+    return 'Visual and audible components such as LEDs, buzzers, and signal indicators for project feedback.';
+  }
+  if (n.includes('sensor')) {
+    return 'Components that detect temperature, motion, light, distance, sound, and other physical conditions.';
+  }
+  if (n.includes('microcontroller') || n.includes('mcu') || n.includes('board') || n.includes('development')) {
+    return 'Compact programmable chips used to control electronic circuits and embedded projects.';
+  }
+  if (n.includes('power') || n.includes('battery')) {
+    return 'Reliable power supplies, lithium batteries, regulators, and converters for electronic prototypes.';
+  }
+  if (n.includes('iot') || n.includes('kit')) {
+    return 'Complete all-in-one prototyping kits and modular kits for robotics and connected IoT applications.';
+  }
+  return 'Curated electronic modules, components, and hardware essentials engineered for innovative projects.';
+};
+
+// Baseline order matching user's preferred layout
+const initialCategories = [
+  {
+    _id: 'c1',
+    category: 'Wireless & Communication Modules',
+    image: imgCommunication,
+    productCount: 10,
+  },
+  {
+    _id: 'c2',
+    category: 'Actuators & Motors',
+    image: imgMotors,
+    productCount: 16,
+  },
+  {
+    _id: 'c3',
+    category: 'Displays & Indicators',
+    image: imgIndicators,
+    productCount: 6,
+  },
+  {
+    _id: 'c4',
+    category: 'Sensor',
+    image: imgSensors,
+    productCount: 14,
+  },
+  {
+    _id: 'c5',
+    category: 'Microcontrollers & Development Boards',
+    image: imgMicrocontrollers,
+    productCount: 14,
+  },
+  {
+    _id: 'c6',
+    category: 'Power & Battery Components',
+    image: imgPower,
+    productCount: 12,
+  },
+  {
+    _id: 'c7',
+    category: 'IoT KIT',
+    image: imgIot,
+    productCount: 8,
+  },
 ];
 
 const Swiper = () => {
   const navigate = useNavigate();
-  const [categories, setCategories] = useState(fallbackCategories);
+  const [categories, setCategories] = useState(initialCategories);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -46,18 +156,29 @@ const Swiper = () => {
         const res = await axios.get(`${API_BASE_URL}/api/category/show`);
         if (!isMounted) return;
         if (Array.isArray(res.data) && res.data.length > 0) {
-          // Filter active categories that have products or are populated
           const activeCategories = res.data.filter(
             (cat) =>
               (!cat.status || cat.status.toLowerCase() === 'active') &&
               (cat.productCount === undefined || cat.productCount > 0)
           );
-          setCategories(activeCategories.length > 0 ? activeCategories : fallbackCategories);
+          if (activeCategories.length > 0) {
+            // Sort to align with the visual showcase order (Communication -> Motors -> Indicators -> Sensors -> Microcontrollers...)
+            const orderKeys = ['communication', 'wireless', 'motor', 'actuator', 'indicator', 'display', 'sensor', 'microcontroller', 'power', 'battery', 'iot'];
+            const getOrderIndex = (name) => {
+              const lower = (name || '').toLowerCase();
+              const idx = orderKeys.findIndex((k) => lower.includes(k));
+              return idx === -1 ? 99 : idx;
+            };
+            activeCategories.sort((a, b) => getOrderIndex(a.category) - getOrderIndex(b.category));
+            setCategories(activeCategories);
+          } else {
+            setCategories(initialCategories);
+          }
         } else {
-          setCategories(fallbackCategories);
+          setCategories(initialCategories);
         }
       } catch {
-        if (isMounted) setCategories(fallbackCategories);
+        if (isMounted) setCategories(initialCategories);
       } finally {
         if (isMounted) setLoading(false);
       }
@@ -69,74 +190,51 @@ const Swiper = () => {
     };
   }, []);
 
-  const getCategoryImageUrl = (cat, index) => {
-    if (cat?.image && typeof cat.image === 'string' && cat.image.trim() !== '') {
-      return formatImg(cat.image, fallbackImages[index % fallbackImages.length]);
-    }
-    return fallbackImages[index % fallbackImages.length];
-  };
-
-  const getCategoryIcon = (name) => {
-    const n = (name || '').toLowerCase().trim();
-    if (n.includes('microcontroller') || n.includes('development board') || n.includes('mcu')) return 'bi-cpu-fill';
-    if (n.includes('sensor')) return 'bi-broadcast-pin';
-    if (n.includes('display') || n.includes('indicator') || n.includes('screen') || n.includes('lcd') || n.includes('oled')) return 'bi-display';
-    if (n.includes('motor') || n.includes('actuator')) return 'bi-gear-wide-connected';
-    if (n.includes('battery') || n.includes('power') || n.includes('supply')) return 'bi-battery-charging';
-    if (n.includes('wireless') || n.includes('communication') || n.includes('bluetooth') || n.includes('wifi') || n.includes('rf')) return 'bi-wifi';
-    if (n.includes('iot') || n.includes('kit') || n.includes('robot')) return 'bi-box-seam-fill';
-    if (n.includes('raspberry') || n.includes('pi')) return 'bi-motherboard-fill';
-    if (n.includes('arduino')) return 'bi-terminal-split';
-    if (n.includes('esp8266') || n.includes('esp32') || n.includes('esp')) return 'bi-router-fill';
-    return 'bi-tag-fill';
-  };
-
-  const handleCategoryClick = (catName) => {
-    if (catName) {
-      navigate(`/product?category=${encodeURIComponent(catName)}`);
+  const handleCategoryClick = (rawCategoryName) => {
+    if (rawCategoryName) {
+      navigate(`/product?category=${encodeURIComponent(rawCategoryName)}`);
     }
   };
 
-  const hasMultiple = categories.length > 4;
+  // Ensure enough slides for a continuous seamless centered loop
+  const slideList = categories.length > 0 && categories.length < 12
+    ? [...categories, ...categories]
+    : categories;
 
   return (
     <section className="category-swiper-section">
-      <div className="container cat-swiper-container">
-        {/* Section Header with Navigation Controls */}
-        <div className="d-flex flex-column flex-md-row align-items-md-end justify-content-between mb-4 pb-2">
+      <div className="container-fluid cat-swiper-outer">
+        {/* Header Section */}
+        <div className="cat-header-row mb-4 pb-2">
           <div>
-            <div className="cat-eyebrow-pill">
-              <span className="cat-pulse-dot"></span>
-              Explore Hardware Taxonomy
-            </div>
+            <div className="cat-eyebrow">BROWSE BY TYPE</div>
             <h2 className="cat-section-title mb-2">
-              Popular <span className="cat-gradient-title">Categories</span>
+              Popular <span className="cat-accent-title">Categories</span>
             </h2>
             <p className="cat-section-desc mb-0">
-              Find exactly what your engineering project requires across our curated component collections.
+              Find exactly what your project needs from our curated electronics families.
             </p>
           </div>
 
-          {hasMultiple && (
-            <div className="d-flex align-items-center gap-2 mt-3 mt-md-0">
-              <button
-                type="button"
-                className="cat-nav-btn swiper-cat-prev"
-                aria-label="Previous Categories"
-                title="Previous"
-              >
-                <i className="bi bi-chevron-left"></i>
-              </button>
-              <button
-                type="button"
-                className="cat-nav-btn swiper-cat-next"
-                aria-label="Next Categories"
-                title="Next"
-              >
-                <i className="bi bi-chevron-right"></i>
-              </button>
-            </div>
-          )}
+          {/* Navigation Controls (< >) */}
+          <div className="cat-nav-controls mt-3 mt-md-0">
+            <button
+              type="button"
+              className="cat-nav-btn swiper-cat-prev"
+              aria-label="Previous Categories"
+              title="Previous"
+            >
+              <i className="bi bi-chevron-left"></i>
+            </button>
+            <button
+              type="button"
+              className="cat-nav-btn swiper-cat-next"
+              aria-label="Next Categories"
+              title="Next"
+            >
+              <i className="bi bi-chevron-right"></i>
+            </button>
+          </div>
         </div>
 
         {/* Loading Spinner */}
@@ -154,99 +252,100 @@ const Swiper = () => {
             </p>
           </div>
         ) : (
-          /* Swiper Carousel */
-          <SwiperReact
-            key={`cat-swiper-${categories.length}`}
-            modules={[Navigation, Autoplay]}
-            spaceBetween={18}
-            slidesPerView={1.2}
-            loop={hasMultiple}
-            speed={750}
-            autoplay={
-              categories.length > 3
-                ? {
-                    delay: 3500,
-                    disableOnInteraction: false,
-                    pauseOnMouseEnter: true,
-                  }
-                : false
-            }
-            navigation={{
-              prevEl: '.swiper-cat-prev',
-              nextEl: '.swiper-cat-next',
-            }}
-            breakpoints={{
-              480: {
-                slidesPerView: Math.min(2, categories.length),
-                spaceBetween: 16,
-              },
-              768: {
-                slidesPerView: Math.min(3, categories.length),
-                spaceBetween: 18,
-              },
-              1024: {
-                slidesPerView: Math.min(4, categories.length),
-                spaceBetween: 20,
-              },
-              1280: {
-                slidesPerView: Math.min(5, categories.length),
-                spaceBetween: 22,
-              },
-            }}
-            className="category-swiper"
-          >
-            {categories.map((cat, index) => {
-              const catName = cat.category || cat.name || 'Category';
-              const catImg = getCategoryImageUrl(cat, index);
-              const productCount = cat.productCount !== undefined ? cat.productCount : 0;
-              const iconClass = getCategoryIcon(catName);
+          /* Centered Swiper Carousel */
+          <div className="cat-swiper-wrapper">
+            <SwiperReact
+              key={`cat-swiper-centered-${slideList.length}`}
+              modules={[Navigation, Autoplay]}
+              centeredSlides={true}
+              centeredSlidesBounds={false}
+              initialSlide={2}
+              loop={true}
+              speed={650}
+              autoplay={{
+                delay: 3200,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+              }}
+              navigation={{
+                prevEl: '.swiper-cat-prev',
+                nextEl: '.swiper-cat-next',
+              }}
+              breakpoints={{
+                320: {
+                  slidesPerView: 1.3,
+                  spaceBetween: 14,
+                },
+                480: {
+                  slidesPerView: 1.8,
+                  spaceBetween: 16,
+                },
+                640: {
+                  slidesPerView: 2.6,
+                  spaceBetween: 18,
+                },
+                860: {
+                  slidesPerView: 3.4,
+                  spaceBetween: 20,
+                },
+                1140: {
+                  slidesPerView: 4.4,
+                  spaceBetween: 22,
+                },
+                1440: {
+                  slidesPerView: 5.4,
+                  spaceBetween: 24,
+                },
+              }}
+              className="category-swiper"
+            >
+              {slideList.map((cat, index) => {
+                const rawName = cat.category || cat.name || 'Category';
+                const displayTitle = getCategoryDisplayTitle(rawName);
+                const description = getCategoryDescription(rawName, cat.description);
+                const fallbackAsset = getMatchedAsset(rawName);
+                const imageUrl = cat.image && typeof cat.image === 'string' && cat.image.trim()
+                  ? formatImg(cat.image, fallbackAsset)
+                  : fallbackAsset;
 
-              return (
-                <SwiperSlide key={cat._id || cat.id || index}>
-                  <div
-                    className="cat-pro-card w-100"
-                    onClick={() => handleCategoryClick(catName)}
-                    title={`Explore ${catName}`}
-                  >
-                    {/* Image Showcase Stage */}
-                    <div className="cat-pro-img-box">
-                      {/* Floating Category Icon Badge */}
-                      <span className="cat-pro-icon-badge" title={catName}>
-                        <i className={`bi ${iconClass}`}></i>
-                      </span>
+                return (
+                  <SwiperSlide key={`${cat._id || cat.id || 'cat'}-${index}`}>
+                    <div
+                      className="cat-card w-100"
+                      onClick={() => handleCategoryClick(rawName)}
+                      title={`Explore ${displayTitle}`}
+                    >
+                      {/* Centered Circular Halo Stage */}
+                      <div className="cat-halo-stage">
+                        <img
+                          src={imageUrl}
+                          alt={displayTitle}
+                          className="cat-image"
+                          loading="lazy"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = fallbackAsset;
+                          }}
+                        />
+                      </div>
 
-                      {/* Centered Product Image */}
-                      <img
-                        src={catImg}
-                        alt={catName}
-                        className="cat-pro-img"
-                        loading="lazy"
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = fallbackImages[index % fallbackImages.length];
-                        }}
-                      />
+                      {/* Category Title */}
+                      <h3 className="cat-title">{displayTitle}</h3>
+
+                      {/* Curated Description */}
+                      <p className="cat-desc">{description}</p>
+
+                      {/* Centered Action Link */}
+                      <div className="cat-explore-link">
+                        Explore products
+                        <i className="bi bi-chevron-right ms-1"></i>
+                      </div>
                     </div>
-
-                    {/* Category Title (Clean 2-line display without truncation) */}
-                    <h3 className="cat-pro-title" title={catName}>
-                      {catName}
-                    </h3>
-
-                    {/* Footer Row: Product Count Pill & Interactive Arrow */}
-                    <div className="cat-pro-footer">
-                      <span className="cat-pro-count">
-                        {productCount > 0 ? `${productCount}+ Products` : 'Collection'}
-                      </span>
-                      <span className="cat-pro-arrow">
-                        <i className="bi bi-arrow-right"></i>
-                      </span>
-                    </div>
-                  </div>
-                </SwiperSlide>
-              );
-            })}
-          </SwiperReact>
+                  </SwiperSlide>
+                );
+              })}
+            </SwiperReact>
+          </div>
         )}
       </div>
     </section>

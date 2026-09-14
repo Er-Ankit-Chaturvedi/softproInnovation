@@ -215,7 +215,7 @@ const Products = () => {
         <div className="d-flex align-items-center gap-2">
           <button
             className="btn btn-white border d-inline-flex align-items-center gap-2 px-3.5 py-2 shadow-xs fw-semibold"
-            style={{ borderRadius: '10px', backgroundColor: '#ffffff', color: '#334155', fontSize: '13.5px' }}
+            style={{ borderRadius: '0px', backgroundColor: '#ffffff', color: '#334155', fontSize: '13px', borderColor: '#e2e8f0' }}
             onClick={fetchProductsAndCategories}
             title="Refresh product list"
           >
@@ -225,11 +225,10 @@ const Products = () => {
             to="/dashboard/products/add"
             className="btn d-inline-flex align-items-center gap-2 px-4 py-2 text-white shadow-sm fw-semibold"
             style={{
-              background: 'linear-gradient(135deg, #3945E0, #2563eb)',
+              backgroundColor: '#1e3a8a',
               border: 'none',
-              borderRadius: '10px',
-              fontSize: '13.5px',
-              boxShadow: '0 4px 14px rgba(57, 69, 224, 0.28)'
+              borderRadius: '0px',
+              fontSize: '13px'
             }}
           >
             <i className="bi bi-plus-lg"></i> Add New Product
@@ -239,7 +238,7 @@ const Products = () => {
 
       {/* Alert Notification */}
       {alert.show && (
-        <div className={`alert alert-${alert.type} alert-dismissible fade show mb-4 shadow-sm`} role="alert" style={{ borderRadius: '12px' }}>
+        <div className={`alert alert-${alert.type} alert-dismissible fade show mb-4 shadow-sm`} role="alert" style={{ borderRadius: '0px' }}>
           <i className={`bi ${alert.type === 'success' ? 'bi-check-circle-fill text-success' : 'bi-exclamation-triangle-fill text-danger'} me-2 fs-5 align-middle`}></i>
           <span>{alert.message}</span>
           <button type="button" className="btn-close shadow-none" onClick={() => setAlert({ show: false, type: '', message: '' })}></button>
@@ -390,14 +389,14 @@ const Products = () => {
           <table className="prod-table align-middle">
             <thead>
               <tr>
-                <th style={{ width: '5%' }} className="text-center">#</th>
-                <th style={{ width: '8%' }}>Item</th>
-                <th style={{ width: '28%' }}>Product Details</th>
-                <th style={{ width: '14%' }}>Category</th>
-                <th style={{ width: '14%' }}>Price (₹)</th>
-                <th style={{ width: '12%' }}>Stock</th>
-                <th style={{ width: '9%' }}>Status</th>
-                <th style={{ width: '10%' }} className="text-end">Actions</th>
+                <th style={{ width: '44px' }} className="text-center">#</th>
+                <th style={{ width: '64px' }} className="text-center">Item</th>
+                <th style={{ minWidth: '260px' }}>Product Details</th>
+                <th style={{ width: '13%' }}>Category</th>
+                <th style={{ width: '13%' }}>Price (₹)</th>
+                <th style={{ width: '13%' }}>Stock</th>
+                <th style={{ width: '11%' }}>Status</th>
+                <th style={{ width: '12%' }} className="text-end">Action</th>
               </tr>
             </thead>
             <tbody>
@@ -411,7 +410,7 @@ const Products = () => {
               ) : filteredProducts.length === 0 ? (
                 <tr>
                   <td colSpan="8" className="text-center py-5 text-muted">
-                    <div className="rounded-circle p-3 bg-light d-inline-flex mb-3">
+                    <div className="p-3 bg-light d-inline-flex mb-3 border" style={{ borderRadius: '0px' }}>
                       <i className="bi bi-box-seam fs-2 text-secondary opacity-50"></i>
                     </div>
                     <h6 className="fw-bold text-dark mb-1">No products found</h6>
@@ -423,7 +422,7 @@ const Products = () => {
                     <Link
                       to="/dashboard/products/add"
                       className="btn btn-sm btn-primary px-3 py-1.5 fw-semibold"
-                      style={{ backgroundColor: '#3945E0', border: 'none', borderRadius: '8px' }}
+                      style={{ backgroundColor: '#1e3a8a', border: 'none', borderRadius: '0px' }}
                     >
                       <i className="bi bi-plus-lg me-1"></i> Add First Product
                     </Link>
@@ -442,11 +441,11 @@ const Products = () => {
                     <tr key={prod._id || index}>
                       {/* S.No */}
                       <td className="text-center">
-                        <span className="prod-sno-badge">{startIndex + index + 1}</span>
+                        <span className="prod-sno-num">{startIndex + index + 1}</span>
                       </td>
 
                       {/* Thumbnail */}
-                      <td>
+                      <td className="text-center">
                         <div className="prod-thumb-box">
                           {thumbUrl ? (
                             <img
@@ -471,33 +470,25 @@ const Products = () => {
                             <span className="prod-name">
                               {prod.name}
                             </span>
-                            <button
-                              type="button"
-                              onClick={() => handleToggleFeature(prod)}
-                              className={`btn btn-sm p-0 border-0 d-inline-flex align-items-center gap-1 ${prod.is_feature ? 'text-warning' : 'text-muted'}`}
-                              title={prod.is_feature ? "Featured on homepage (click to remove)" : "Click to mark as Featured"}
-                              style={{ background: 'none', cursor: 'pointer', transition: 'all 0.2s ease', opacity: prod.is_feature ? 1 : 0.45 }}
-                            >
-                              <i className={`bi ${prod.is_feature ? 'bi-star-fill text-warning' : 'bi-star'}`}></i>
-                              {prod.is_feature && (
-                                <span className="prod-badge-featured">
-                                  Featured
-                                </span>
-                              )}
-                            </button>
+                            {prod.is_feature ? (
+                              <span className="prod-badge-featured" title="Featured item">
+                                <i className="bi bi-star-fill text-warning me-1"></i>
+                                Featured
+                              </span>
+                            ) : null}
                           </div>
                           <p className="prod-desc-text">
                             {prod.shortdescription || 'No summary provided for this item'}
                           </p>
-                          <div className="d-flex flex-wrap gap-1.5">
+                          <div className="d-flex flex-wrap gap-1">
                             {prod.isfreedelivery && (
                               <span className="prod-tag-pill prod-tag-delivery">
-                                <i className="bi bi-truck"></i> Free Delivery
+                                <i className="bi bi-truck me-1"></i>Free Delivery
                               </span>
                             )}
                             {prod.iscouponavailable && (
                               <span className="prod-tag-pill prod-tag-coupon">
-                                <i className="bi bi-tag-fill"></i> Coupon
+                                <i className="bi bi-tag-fill me-1"></i>Coupon
                               </span>
                             )}
                             {Array.isArray(prod.tags) &&
@@ -512,13 +503,13 @@ const Products = () => {
 
                       {/* Category */}
                       <td>
-                        <div className="prod-cat-badge">
-                          <i className="bi bi-folder2-open"></i>
+                        <div className="prod-cat-text">
+                          <i className="bi bi-folder2 text-secondary opacity-75 me-1.5"></i>
                           <span>{catName}</span>
                         </div>
                         {prod.height && prod.width ? (
                           <div className="prod-dim-text">
-                            <i className="bi bi-rulers"></i>
+                            <i className="bi bi-rulers me-1"></i>
                             <span>{prod.height} × {prod.width} mm</span>
                           </div>
                         ) : null}
@@ -526,31 +517,35 @@ const Products = () => {
 
                       {/* Price Details */}
                       <td>
-                        <div className="d-flex align-items-baseline">
-                          <span className="prod-price-current">
-                            ₹ {prod.price?.toLocaleString('en-IN') || 0}
-                          </span>
-                          {prod.compareprice && prod.compareprice > prod.price && (
-                            <span className="prod-price-compare">
-                              ₹ {prod.compareprice?.toLocaleString('en-IN')}
+                        <div className="prod-price-cell">
+                          <div className="d-flex align-items-baseline gap-1.5 text-nowrap">
+                            <span className="prod-price-current">
+                              ₹{Number(prod.price || 0).toLocaleString('en-IN')}
                             </span>
-                          )}
-                        </div>
-                        {prod.costprice ? (
-                          <div className="prod-price-cost">
-                            Cost: ₹ {prod.costprice?.toLocaleString('en-IN')}
+                            {prod.compareprice && Number(prod.compareprice) > Number(prod.price) ? (
+                              <span className="prod-price-compare">
+                                ₹{Number(prod.compareprice).toLocaleString('en-IN')}
+                              </span>
+                            ) : null}
                           </div>
-                        ) : null}
+                          {prod.costprice ? (
+                            <div className="prod-price-cost text-nowrap">
+                              Cost: ₹{Number(prod.costprice).toLocaleString('en-IN')}
+                            </div>
+                          ) : null}
+                        </div>
                       </td>
 
                       {/* Stock Status */}
                       <td>
-                        <div className={`prod-stock-pill ${isStock ? 'prod-stock-in' : isLow ? 'prod-stock-low' : 'prod-stock-out'}`}>
-                          <span className="prod-stock-dot"></span>
-                          <span>{prod.stockstatus || 'Out of Stock'}</span>
-                        </div>
-                        <div className="prod-stock-qty">
-                          Qty: <strong className="text-dark">{prod.stockquantity ?? 0}</strong>
+                        <div className="prod-stock-cell">
+                          <div className={`prod-stock-badge ${isStock ? 'prod-stock-in' : isLow ? 'prod-stock-low' : 'prod-stock-out'}`}>
+                            <span className="prod-stock-dot"></span>
+                            <span>{prod.stockstatus || (isStock ? 'In Stock' : 'Out of Stock')}</span>
+                          </div>
+                          <div className="prod-stock-qty">
+                            Qty: <strong className="text-dark">{prod.stockquantity ?? 0}</strong>
+                          </div>
                         </div>
                       </td>
 
@@ -562,18 +557,18 @@ const Products = () => {
                           className={`prod-status-toggle ${isActive ? 'prod-status-active' : 'prod-status-inactive'}`}
                           title={`Click to mark as ${isActive ? 'Inactive' : 'Active'}`}
                         >
-                          <i className={`bi ${isActive ? 'bi-check-circle-fill' : 'bi-dash-circle'}`}></i>
+                          <i className={`bi ${isActive ? 'bi-check2-circle' : 'bi-dash-circle'} me-1`}></i>
                           <span>{isActive ? 'Active' : 'Inactive'}</span>
                         </button>
                       </td>
 
                       {/* Action Buttons */}
                       <td className="text-end">
-                        <div className="d-inline-flex gap-1.5">
+                        <div className="d-inline-flex gap-1">
                           {/* Quick Feature Toggle Button */}
                           <button
                             type="button"
-                            className={`prod-action-btn ${prod.is_feature ? 'border-warning bg-warning bg-opacity-10 text-warning' : ''}`}
+                            className={`prod-action-btn prod-action-feature ${prod.is_feature ? 'is-active' : ''}`}
                             title={prod.is_feature ? "Remove from Featured" : "Mark as Featured"}
                             onClick={() => handleToggleFeature(prod)}
                           >
@@ -756,12 +751,12 @@ const Products = () => {
           style={{ backgroundColor: 'rgba(15, 23, 42, 0.65)', backdropFilter: 'blur(4px)' }}
         >
           <div className="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-            <div className="modal-content border-0 shadow-lg" style={{ borderRadius: '18px', overflow: 'hidden' }}>
+            <div className="modal-content border-0 shadow-lg" style={{ borderRadius: '0px', overflow: 'hidden' }}>
               
               {/* Modal Header */}
               <div className="modal-header bg-light border-bottom p-3.5">
                 <div className="d-flex align-items-center gap-2">
-                  <span className="badge rounded-pill bg-primary px-2.5 py-1" style={{ fontSize: '12px' }}>
+                  <span className="badge bg-primary px-2.5 py-1" style={{ borderRadius: '0px', fontSize: '12px' }}>
                     {viewProduct.category_id?.category || viewProduct.category_id?.name || 'Category'}
                   </span>
                   <h5 className="modal-title fw-bold text-dark mb-0" style={{ fontSize: '17px' }}>
@@ -806,13 +801,13 @@ const Products = () => {
                         <div>
                           {/* Main Image Slide Container */}
                           <div
-                            className="position-relative border rounded-4 p-3 bg-white mb-3 text-center d-flex align-items-center justify-content-center shadow-xs overflow-hidden"
-                            style={{ height: '260px', backgroundColor: '#f8fafc' }}
+                            className="position-relative border p-3 bg-white mb-3 text-center d-flex align-items-center justify-content-center shadow-xs overflow-hidden"
+                            style={{ height: '260px', backgroundColor: '#f8fafc', borderRadius: '0px' }}
                           >
                             <img
                               src={currentSrc}
                               alt={`${viewProduct.name} - slide ${safeIdx + 1}`}
-                              className="img-fluid rounded-3"
+                              className="img-fluid"
                               style={{
                                 maxHeight: '220px',
                                 maxWidth: '100%',
@@ -827,6 +822,7 @@ const Products = () => {
                                 <button
                                   type="button"
                                   className="product-modal-arrow-btn prev"
+                                  style={{ borderRadius: '0px' }}
                                   onClick={handlePrev}
                                   title="Previous Image"
                                   aria-label="Previous Image"
@@ -837,6 +833,7 @@ const Products = () => {
                                 <button
                                   type="button"
                                   className="product-modal-arrow-btn next"
+                                  style={{ borderRadius: '0px' }}
                                   onClick={handleNext}
                                   title="Next Image"
                                   aria-label="Next Image"
@@ -846,8 +843,8 @@ const Products = () => {
 
                                 {/* Counter badge */}
                                 <span
-                                  className="position-absolute bottom-0 end-0 mb-2 me-2 badge bg-dark bg-opacity-75 text-white rounded-pill px-2 py-1"
-                                  style={{ fontSize: '11px' }}
+                                  className="position-absolute bottom-0 end-0 mb-2 me-2 badge bg-dark bg-opacity-75 text-white px-2 py-1"
+                                  style={{ fontSize: '11px', borderRadius: '0px' }}
                                 >
                                   {safeIdx + 1} / {allImgs.length}
                                 </span>
@@ -874,10 +871,11 @@ const Products = () => {
                                     <button
                                       key={idx}
                                       type="button"
-                                      className="btn p-1 border rounded-3 bg-white"
+                                      className="btn p-1 border bg-white"
                                       style={{
                                         width: '56px',
                                         height: '56px',
+                                        borderRadius: '0px',
                                         borderColor: isSelected ? '#3945E0' : '#e2e8f0',
                                         borderWidth: isSelected ? '2px' : '1px',
                                         boxShadow: isSelected
@@ -892,7 +890,6 @@ const Products = () => {
                                       <img
                                         src={src}
                                         alt={`thumb-${idx}`}
-                                        className="rounded-2"
                                         style={{ width: '100%', height: '100%', objectFit: 'contain' }}
                                       />
                                     </button>
@@ -916,19 +913,19 @@ const Products = () => {
                     <h6 className="text-muted fw-bold text-uppercase mb-1" style={{ fontSize: '11px', letterSpacing: '0.5px' }}>Pricing & Dimensions</h6>
                     <div className="row g-2 mb-3">
                       <div className="col-4">
-                        <div className="p-2 bg-light rounded-2 border">
+                        <div className="p-2 bg-light border" style={{ borderRadius: '0px' }}>
                           <small className="text-muted d-block" style={{ fontSize: '11px' }}>Selling Price</small>
                           <strong className="text-dark fs-6">₹ {viewProduct.price}</strong>
                         </div>
                       </div>
                       <div className="col-4">
-                        <div className="p-2 bg-light rounded-2 border">
+                        <div className="p-2 bg-light border" style={{ borderRadius: '0px' }}>
                           <small className="text-muted d-block" style={{ fontSize: '11px' }}>Compare Price</small>
                           <strong className="text-dark fs-6">₹ {viewProduct.compareprice}</strong>
                         </div>
                       </div>
                       <div className="col-4">
-                        <div className="p-2 bg-light rounded-2 border">
+                        <div className="p-2 bg-light border" style={{ borderRadius: '0px' }}>
                           <small className="text-muted d-block" style={{ fontSize: '11px' }}>Cost Price</small>
                           <strong className="text-dark fs-6">₹ {viewProduct.costprice}</strong>
                         </div>
@@ -937,13 +934,13 @@ const Products = () => {
 
                     <div className="row g-2 mb-3">
                       <div className="col-6">
-                        <div className="p-2 bg-light rounded-2 border">
+                        <div className="p-2 bg-light border" style={{ borderRadius: '0px' }}>
                           <small className="text-muted d-block" style={{ fontSize: '11px' }}>Dimensions (H × W)</small>
                           <strong className="text-dark">{viewProduct.height} × {viewProduct.width} mm</strong>
                         </div>
                       </div>
                       <div className="col-6">
-                        <div className="p-2 bg-light rounded-2 border">
+                        <div className="p-2 bg-light border" style={{ borderRadius: '0px' }}>
                           <small className="text-muted d-block" style={{ fontSize: '11px' }}>Stock & Status</small>
                           <strong className="text-dark">{viewProduct.stockquantity} units ({viewProduct.stockstatus})</strong>
                         </div>
@@ -963,7 +960,7 @@ const Products = () => {
                         <small className="text-muted fw-semibold d-block mb-1">Tags</small>
                         <div className="d-flex flex-wrap gap-1">
                           {viewProduct.tags.map((t, idx) => (
-                            <span key={idx} className="badge bg-secondary-subtle text-secondary border" style={{ fontSize: '11px' }}>
+                            <span key={idx} className="badge bg-secondary-subtle text-secondary border" style={{ borderRadius: '0px', fontSize: '11px' }}>
                               #{t}
                             </span>
                           ))}
@@ -989,14 +986,14 @@ const Products = () => {
                 <Link
                   to={`/dashboard/products/edit/${viewProduct._id}`}
                   className="btn btn-primary btn-sm px-3"
-                  style={{ backgroundColor: '#3945E0', border: 'none', borderRadius: '8px' }}
+                  style={{ backgroundColor: '#1e3a8a', border: 'none', borderRadius: '0px' }}
                 >
                   <i className="bi bi-pencil me-1"></i> Edit Product
                 </Link>
                 <button
                   type="button"
                   className="btn btn-secondary btn-sm px-3"
-                  style={{ borderRadius: '8px' }}
+                  style={{ borderRadius: '0px' }}
                   onClick={() => setViewProduct(null)}
                 >
                   Close
@@ -1017,11 +1014,11 @@ const Products = () => {
           role="dialog"
         >
           <div className="modal-dialog modal-dialog-centered" style={{ maxWidth: '440px' }}>
-            <div className="modal-content border-0 shadow-lg rounded-4 overflow-hidden text-start">
+            <div className="modal-content border-0 shadow-lg text-start" style={{ borderRadius: '0px', overflow: 'hidden' }}>
               <div className="modal-body p-4 text-center">
                 <div 
-                  className="rounded-circle bg-danger bg-opacity-10 text-danger d-inline-flex align-items-center justify-content-center mb-3"
-                  style={{ width: '64px', height: '64px' }}
+                  className="bg-danger bg-opacity-10 text-danger d-inline-flex align-items-center justify-content-center mb-3"
+                  style={{ width: '56px', height: '56px', borderRadius: '0px' }}
                 >
                   <i className="bi bi-trash3-fill fs-2"></i>
                 </div>
@@ -1033,7 +1030,8 @@ const Products = () => {
               <div className="modal-footer border-0 bg-light p-3 px-4 d-flex justify-content-end gap-2">
                 <button 
                   type="button" 
-                  className="btn btn-outline-secondary px-3.5 py-2 fw-medium rounded-3"
+                  className="btn btn-outline-secondary px-3.5 py-2 fw-medium"
+                  style={{ borderRadius: '0px' }}
                   disabled={Boolean(deletingId)}
                   onClick={() => setDeleteModal({ show: false, id: null, name: '' })}
                 >
@@ -1041,7 +1039,8 @@ const Products = () => {
                 </button>
                 <button 
                   type="button" 
-                  className="btn btn-danger px-4 py-2 fw-semibold rounded-3 d-inline-flex align-items-center gap-2 shadow-sm"
+                  className="btn btn-danger px-4 py-2 fw-semibold d-inline-flex align-items-center gap-2 shadow-sm"
+                  style={{ borderRadius: '0px' }}
                   disabled={Boolean(deletingId)}
                   onClick={confirmDelete}
                 >

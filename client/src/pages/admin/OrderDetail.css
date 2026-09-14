@@ -768,70 +768,17 @@
    PRINT MEDIA RULES - ULTRA CLEAN EXACT PRINTING
    ========================================================================== */
 @media screen {
-  .od-printable-invoice {
-    display: none;
-  }
-  .inv-preview-paper .od-printable-invoice {
-    display: block !important;
-  }
-}
-
-@media print {
-  @page {
-    size: A4 portrait;
-    margin: 10mm 12mm 10mm 12mm;
-  }
-
-  html, body {
-    background: #ffffff !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    font-size: 10pt !important;
-    color: #0f172a !important;
-    -webkit-print-color-adjust: exact !important;
-    print-color-adjust: exact !important;
-  }
-
-  /* Completely eliminate all non-invoice components */
-  .admin-sidebar,
-  .admin-topbar,
-  .od-page-container,
-  nav,
-  header,
-  footer,
-  .btn,
-  .alert,
-  .inv-preview-modal-backdrop,
-  .inv-preview-toolbar,
-  .inv-preview-scroll,
-  .inv-preview-paper,
-  .modal-backdrop,
-  .modal {
+  .od-printable-invoice-wrapper {
     display: none !important;
   }
-
-  /* Render ONLY the dedicated printable invoice */
-  .od-printable-invoice {
-    display: block !important;
-    position: static !important;
-    width: 100% !important;
-    margin: 0 !important;
-    padding: 0 !important;
-    background: #ffffff !important;
-    box-shadow: none !important;
-    border: none !important;
-  }
-
-  .inv-address-card,
-  .inv-words-panel {
-    background: #f8fafc !important;
-    -webkit-print-color-adjust: exact !important;
-  }
-
-  .inv-items-table thead tr {
-    background: #1e293b !important;
-    color: #ffffff !important;
-    -webkit-print-color-adjust: exact !important;
+  .inv-preview-paper {
+    background: #ffffff;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+    border-radius: 8px;
+    max-width: 860px;
+    margin: 0 auto;
+    overflow: hidden;
   }
 }
+
 

@@ -1,14 +1,20 @@
 import { useState, useEffect } from 'react';
-import { NavLink, Outlet, useNavigate, Link } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate, Link, useLocation } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { formatImg } from '../../utils/imageUrl';
 import './Dashboard.css';
 
 const DashboardLayout = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [adminName, setAdminName] = useState(localStorage.getItem('name') || 'Administrator');
   const [adminPicture, setAdminPicture] = useState(localStorage.getItem('picture') || '');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const avatarInitials = adminName.slice(0, 2).toUpperCase();
+
+  useEffect(() => {
+    setSidebarOpen(false);
+  }, [location.pathname]);
 
   useEffect(() => {
     const syncAdmin = () => {
@@ -34,8 +40,48 @@ const DashboardLayout = () => {
 
   return (
     <div className="dashboard-container">
+      {/* Mobile Top Header (Screens < 992px) */}
+      <header className="dashboard-mobile-header d-lg-none d-flex align-items-center justify-content-between px-3 py-2 text-white border-bottom shadow-xs">
+        <div className="d-flex align-items-center gap-2">
+          <button
+            type="button"
+            className="btn btn-outline-light btn-sm border-0 p-1.5 d-flex align-items-center justify-content-center"
+            onClick={() => setSidebarOpen(prev => !prev)}
+            aria-label="Toggle Navigation Menu"
+            title="Toggle Menu"
+          >
+            <i className={`bi ${sidebarOpen ? 'bi-x-lg' : 'bi-list'} fs-4 text-white`}></i>
+          </button>
+          <Link to="/" className="d-flex align-items-center text-white text-decoration-none">
+            <img src={logo} alt="Softpro Innovation" width="24" height="24" className="me-1.5" style={{ objectFit: 'contain' }} />
+            <span className="fw-bold" style={{ fontSize: '14px' }}>
+              Softpro<span style={{ color: '#38bdf8' }}>Innovation</span>
+            </span>
+          </Link>
+        </div>
+
+        <div className="d-flex align-items-center gap-2">
+          <span className="badge bg-white bg-opacity-20 text-white" style={{ fontSize: '11px' }}>Admin</span>
+          <div
+            className="sidebar-avatar-fallback rounded-circle"
+            style={{ width: 28, height: 28, fontSize: '11px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#38bdf8', color: '#0f172a', fontWeight: 'bold' }}
+          >
+            {avatarInitials}
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile Drawer Backdrop */}
+      {sidebarOpen && (
+        <div 
+          className="dashboard-sidebar-backdrop d-lg-none" 
+          onClick={() => setSidebarOpen(false)}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Sidebar */}
-      <aside className="dashboard-sidebar">
+      <aside className={`dashboard-sidebar ${sidebarOpen ? 'mobile-open' : ''}`}>
         <div className="sidebar-brand-header text-center py-3 px-2 border-bottom border-secondary border-opacity-25 mb-3">
           <Link to="/" className="d-flex align-items-center justify-content-center text-white text-decoration-none">
             <img src={logo} alt="Softpro Innovation" width="28" height="28" className="me-2" style={{ objectFit: 'contain' }} />
@@ -101,6 +147,11 @@ const DashboardLayout = () => {
             </NavLink>
           </li>
           <li>
+            <NavLink to="/dashboard/invoice-preview" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+              <i className="bi bi-file-earmark-text"></i> Invoices
+            </NavLink>
+          </li>
+          <li>
             <NavLink to="/dashboard/users" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
               <i className="bi bi-people"></i> Users List
             </NavLink>
@@ -111,11 +162,15 @@ const DashboardLayout = () => {
             </NavLink>
           </li>
           <li>
+            <NavLink to="/dashboard/addresses" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
+              <i className="bi bi-geo-alt"></i> Addresses
+            </NavLink>
+          </li>
+          <li>
             <NavLink to="/dashboard/complaints" className={({ isActive }) => `sidebar-link ${isActive ? 'active' : ''}`}>
               <i className="bi bi-chat-left-text"></i> Complaints
             </NavLink>
           </li>
-
         </ul>
 
         <div className="sidebar-footer border-top border-secondary border-opacity-25">

@@ -1,0 +1,441 @@
+/* ==========================================================================
+   TAX INVOICE BILL STYLES - SCREEN PREVIEW & ULTRA-CLEAN PRINT ONLY
+   ========================================================================== */
+
+.tax-invoice-bill-container {
+  background: #ffffff;
+  color: #0f172a;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  padding: 24px 28px;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+@media screen {
+  .user-printable-bill-wrapper,
+  .od-printable-invoice-wrapper {
+    display: none !important;
+  }
+}
+
+@media print {
+  .user-printable-bill-wrapper,
+  .od-printable-invoice-wrapper {
+    display: block !important;
+  }
+}
+
+/* 1. Header */
+.tib-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  margin-bottom: 14px;
+}
+
+.tib-brand-col {
+  flex: 1;
+}
+
+.tib-brand-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.tib-logo-img {
+  width: 44px;
+  height: 44px;
+  object-fit: contain;
+}
+
+.tib-company-name {
+  font-size: 19px;
+  font-weight: 800;
+  color: #0f172a;
+  letter-spacing: 0.5px;
+  margin: 0;
+  line-height: 1.15;
+}
+
+.tib-company-tagline {
+  font-size: 11px;
+  font-weight: 600;
+  color: #2563eb;
+  margin: 2px 0 0;
+}
+
+.tib-company-details {
+  font-size: 11px;
+  color: #475569;
+  line-height: 1.45;
+}
+
+.tib-company-details p {
+  margin: 1px 0;
+}
+
+.tib-meta-col {
+  text-align: right;
+  min-width: 250px;
+}
+
+.tib-tax-badge {
+  display: inline-block;
+  background: #0f172a;
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  padding: 4px 12px;
+  border-radius: 4px;
+  margin-bottom: 6px;
+}
+
+.tib-meta-table {
+  width: 100%;
+  font-size: 11px;
+  border-collapse: collapse;
+}
+
+.tib-meta-table td {
+  padding: 2px 0;
+}
+
+.tib-meta-lbl {
+  color: #64748b;
+  text-align: left;
+}
+
+.tib-meta-val {
+  font-weight: 700;
+  color: #0f172a;
+  text-align: right;
+}
+
+.tib-rule {
+  height: 2px;
+  background: #e2e8f0;
+  margin: 12px 0 16px;
+}
+
+/* 2. Addresses */
+.tib-addresses-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.tib-address-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.tib-address-tag {
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: #2563eb;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.tib-address-name {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 4px;
+}
+
+.tib-address-lines {
+  font-size: 11px;
+  color: #334155;
+  line-height: 1.45;
+}
+
+.tib-destination-type {
+  font-size: 10px;
+  color: #64748b;
+  margin-top: 4px;
+}
+
+/* 3. Products Table */
+.tib-products-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+  font-size: 11.5px;
+}
+
+.tib-products-table thead tr {
+  background: #1e293b;
+  color: #ffffff;
+}
+
+.tib-products-table th {
+  padding: 8px 10px;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  border: 1px solid #1e293b;
+}
+
+.tib-products-table td {
+  padding: 8px 10px;
+  border: 1px solid #e2e8f0;
+  color: #1e293b;
+  vertical-align: middle;
+}
+
+.tib-products-table tbody tr:nth-child(even) {
+  background: #fafafa;
+}
+
+.tib-item-name {
+  font-weight: 600;
+  color: #0f172a;
+  line-height: 1.3;
+}
+
+.tib-item-category {
+  display: inline-block;
+  font-size: 9.5px;
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  padding: 1px 6px;
+  border-radius: 4px;
+  margin-top: 2px;
+}
+
+/* 4. Calculations & Words */
+.tib-calc-row {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.tib-words-card {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  padding: 12px 14px;
+}
+
+.tib-words-title {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: #64748b;
+  margin-bottom: 3px;
+}
+
+.tib-words-text {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 12px;
+}
+
+.tib-terms-box {
+  border-top: 1px dashed #cbd5e1;
+  padding-top: 8px;
+}
+
+.tib-terms-title {
+  font-size: 9.5px;
+  font-weight: 700;
+  color: #475569;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.tib-terms-list {
+  margin: 0;
+  padding-left: 14px;
+  font-size: 9.5px;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+.tib-totals-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.tib-totals-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+
+.tib-totals-table td {
+  padding: 5px 2px;
+}
+
+.tib-tot-lbl {
+  color: #64748b;
+  font-weight: 600;
+}
+
+.tib-tot-num {
+  text-align: right;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.tib-grand-total-row td {
+  padding-top: 8px;
+  border-top: 2px solid #0f172a;
+  font-size: 14px;
+  font-weight: 800;
+  color: #1d4ed8;
+}
+
+/* 5. Footer Signatory */
+.tib-footer-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding-top: 14px;
+  border-top: 1px dashed #cbd5e1;
+}
+
+.tib-footer-notice {
+  font-size: 10px;
+  color: #64748b;
+  max-width: 400px;
+  line-height: 1.4;
+}
+
+.tib-signature-block {
+  text-align: right;
+}
+
+.tib-seal-badge {
+  display: inline-block;
+  border: 1.5px solid #16a34a;
+  color: #16a34a;
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-size: 9.5px;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.tib-sign-org {
+  font-size: 11px;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 24px;
+}
+
+.tib-sign-role {
+  font-size: 10.5px;
+  font-weight: 600;
+  color: #475569;
+  border-top: 1px solid #94a3b8;
+  padding-top: 3px;
+}
+
+/* ==========================================================================
+   PRINT MEDIA RULES - ONLY PRINT THE BILL! NOTHING ELSE!
+   ========================================================================== */
+@media print {
+  @page {
+    size: A4;
+    margin: 10mm;
+  }
+
+  /* Reset body and hide every single element on the web page */
+  html, body {
+    background: #ffffff !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    height: auto !important;
+    overflow: visible !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  body * {
+    visibility: hidden !important;
+  }
+
+  /* Force ONLY the tax invoice bill and its children to be visible */
+  #tax-invoice-bill,
+  #tax-invoice-bill * {
+    visibility: visible !important;
+  }
+
+  #tax-invoice-bill {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+    box-shadow: none !important;
+    border: none !important;
+    z-index: 99999999 !important;
+  }
+
+  .tib-products-table {
+    page-break-inside: auto !important;
+    break-inside: auto !important;
+  }
+
+  .tib-products-table thead {
+    display: table-header-group !important;
+  }
+
+  .tib-products-table tr {
+    page-break-inside: avoid !important;
+    break-inside: avoid !important;
+  }
+
+  /* Force background colors to print on physical printers and PDF exports */
+  .tib-products-table thead tr {
+    background: #1e293b !important;
+    color: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .tib-address-card,
+  .tib-words-card {
+    background: #f8fafc !important;
+    border: 1px solid #cbd5e1 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .tib-tax-badge {
+    background: #0f172a !important;
+    color: #ffffff !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .tib-seal-badge {
+    border-color: #16a34a !important;
+    color: #16a34a !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}

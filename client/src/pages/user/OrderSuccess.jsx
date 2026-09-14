@@ -1,11 +1,10 @@
-import { useLocation, Link, useNavigate } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { formatImg } from '../../utils/imageUrl';
 
 const OrderSuccess = () => {
   const location = useLocation();
-  const navigate = useNavigate();
 
   const {
     orderId,

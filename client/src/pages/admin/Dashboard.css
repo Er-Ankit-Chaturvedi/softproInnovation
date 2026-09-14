@@ -8,6 +8,32 @@
   background-color: #f4f7fb;
 }
 
+/* Mobile Header (Screens < 992px) */
+.dashboard-mobile-header {
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+  height: 52px;
+  z-index: 1030;
+  flex-shrink: 0;
+}
+
+/* Mobile Sidebar Drawer Overlay */
+.dashboard-sidebar-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.6);
+  backdrop-filter: blur(2px);
+  z-index: 1045;
+  animation: aipFadeInBackdrop 0.2s ease-out;
+}
+
+@keyframes aipFadeInBackdrop {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
 /* Sidebar Styles - Fixed in one place */
 .dashboard-sidebar {
   width: 260px;
@@ -24,6 +50,41 @@
   overflow-x: hidden;
   z-index: 100;
   box-shadow: 2px 0 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (max-width: 991.98px) {
+  .dashboard-container {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .dashboard-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    height: 100vh;
+    width: 270px;
+    max-width: 85vw;
+    z-index: 1050;
+    transform: translateX(-100%);
+    box-shadow: none;
+  }
+
+  .dashboard-sidebar.mobile-open {
+    transform: translateX(0);
+    box-shadow: 6px 0 28px rgba(0, 0, 0, 0.35);
+  }
+
+  .dashboard-main {
+    height: auto;
+    overflow: visible;
+    padding-bottom: 40px;
+  }
 }
 
 .dashboard-sidebar::-webkit-scrollbar {
@@ -743,5 +804,39 @@
   font-size: 9px;
   letter-spacing: 1px;
   user-select: none;
+}
+
+/* Global Admin Print Cleanups */
+@media print {
+  .dashboard-container {
+    display: block !important;
+    height: auto !important;
+    min-height: 100% !important;
+    max-height: none !important;
+    overflow: visible !important;
+    background: transparent !important;
+  }
+
+  .dashboard-sidebar,
+  .sidebar-profile-card,
+  .sidebar-nav,
+  .sidebar-footer,
+  aside.dashboard-sidebar {
+    display: none !important;
+    visibility: hidden !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+  }
+
+  .dashboard-main {
+    display: block !important;
+    height: auto !important;
+    min-height: 100% !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
 }
 
