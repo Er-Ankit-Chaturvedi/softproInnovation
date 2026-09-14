@@ -13,6 +13,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+// Health Check / Root route
+app.get('/', (req, res) => {
+    res.json({
+        status: "online",
+        message: "SoftPro Innovation Backend API is running successfully!",
+        timestamp: new Date().toISOString()
+    });
+});
+
 //API'S STARTED
 app.use('/api/admin', AdminRoutes);
 app.use('/api/category', require('./routes/CategoryRoutes'));
