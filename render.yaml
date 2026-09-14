@@ -1,0 +1,12 @@
+services:
+  - type: web
+    name: softpro-server
+    env: node
+    plan: free
+    region: oregon
+    buildCommand: bash .render/build.sh
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+
