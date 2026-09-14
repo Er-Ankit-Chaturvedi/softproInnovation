@@ -1,5 +1,18 @@
-server/.env
-uploads/*
+# Dependencies
+node_modules/
 client/node_modules/
 server/node_modules/
+
+# Environment Variables
+.env
+.env.*
+server/.env
+client/.env
+
+# Build outputs
 client/dist/
+dist/
+
+# Uploads
+uploads/*
+!uploads/.gitkeep
