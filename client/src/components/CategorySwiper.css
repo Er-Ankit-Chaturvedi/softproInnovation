@@ -252,6 +252,24 @@
 }
 
 /* Responsive tuning */
+@media (max-width: 767.98px) {
+  .cat-header-row {
+    align-items: center !important;
+    text-align: center !important;
+  }
+
+  .cat-section-desc {
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+
+  .cat-nav-controls {
+    justify-content: center !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+  }
+}
+
 @media (max-width: 575.98px) {
   .category-swiper-section {
     padding: 50px 0 60px;
