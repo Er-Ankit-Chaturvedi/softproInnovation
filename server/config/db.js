@@ -24,12 +24,19 @@ const cleanMongoUri = (uri) => {
 
 const mongoDB = async () => {
     try {
+        if (!process.env.MONGO_URI) {
+            const path = require('path');
+            require('dotenv').config({ path: path.join(__dirname, '..', '.env'), quiet: true });
+        }
         const rawUri = process.env.MONGO_URI;
+        if (!rawUri) {
+            throw new Error("MONGO_URI environment variable is not defined");
+        }
         const uri = cleanMongoUri(rawUri);
         await mongoose.connect(uri);
         console.log("DB Connection Successful");
     } catch (error) {
-        console.log("DB Connection Failed", error.message);
+        console.log("DB Connection Failed:", error.message);
     }
 };
 

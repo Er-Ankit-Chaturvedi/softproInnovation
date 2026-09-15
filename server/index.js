@@ -1,8 +1,9 @@
 const express= require('express')
 const cors = require('cors')
-const dotenv = require('dotenv')
+const dotenv = require('dotenv');
 const path = require('path');
-dotenv.config({ quiet: true, override: true });
+dotenv.config({ path: path.join(__dirname, '.env'), quiet: true, override: true });
+dotenv.config({ path: path.join(__dirname, '..', '.env'), quiet: true });
 const app = express();
 const AdminRoutes = require('./routes/AdminRoutes');
 const mongoDB = require('./config/db');

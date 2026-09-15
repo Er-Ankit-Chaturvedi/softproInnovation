@@ -200,164 +200,157 @@ const Swiper = () => {
   const slideList = categories.length > 0 && categories.length < 12
     ? [...categories, ...categories]
     : categories;
-
   return (
-    <section className="category-swiper-section ">
-      <div  class="container-fluid">
-        <div class="row">
-          <div class="col-sm-11 mx-auto overflow-hidden">
-      <div className="container-fluid cat-swiper-outer">
-        {/* Header Section */}
-        <div className="cat-header-row mb-4 pb-2">
-          <div>
-            <div className="cat-eyebrow">BROWSE BY TYPE</div>
-            <h2 className="cat-section-title mb-2">
-              Popular <span className="cat-accent-title">Categories</span>
-            </h2>
-            <p className="cat-section-desc mb-0">
-              Find exactly what your project needs from our curated electronics families.
-            </p>
-          </div>
+    <section className="category-swiper-section">
+      <div className="container-fluid">
+        <div className="row">
+          <div className="col-sm-11 mx-auto overflow-hidden">
+            <div className="container-fluid cat-swiper-outer">
+              {/* Header Section */}
+              <div className="cat-header-row mb-4 pb-2">
+                <div>
+                  <div className="cat-eyebrow">BROWSE BY TYPE</div>
+                  <h2 className="cat-section-title mb-2">
+                    Popular <span className="cat-accent-title">Categories</span>
+                  </h2>
+                  <p className="cat-section-desc mb-0">
+                    Find exactly what your project needs from our curated electronics families.
+                  </p>
+                </div>
 
-          {/* Navigation Controls (< >) */}
-          <div className="cat-nav-controls mt-3 mt-md-0">
-            <button
-              type="button"
-              className="cat-nav-btn swiper-cat-prev"
-              aria-label="Previous Categories"
-              title="Previous"
-            >
-              <i className="bi bi-chevron-left"></i>
-            </button>
-            <button
-              type="button"
-              className="cat-nav-btn swiper-cat-next"
-              aria-label="Next Categories"
-              title="Next"
-            >
-              <i className="bi bi-chevron-right"></i>
-            </button>
+                {/* Navigation Controls (< >) */}
+                <div className="cat-nav-controls mt-3 mt-md-0">
+                  <button
+                    type="button"
+                    className="cat-nav-btn swiper-cat-prev"
+                    aria-label="Previous Categories"
+                    title="Previous"
+                  >
+                    <i className="bi bi-chevron-left"></i>
+                  </button>
+                  <button
+                    type="button"
+                    className="cat-nav-btn swiper-cat-next"
+                    aria-label="Next Categories"
+                    title="Next"
+                  >
+                    <i className="bi bi-chevron-right"></i>
+                  </button>
+                </div>
+              </div>
+
+              {/* Loading Spinner */}
+              {loading ? (
+                <div className="d-flex justify-content-center align-items-center py-5">
+                  <div className="spinner-border text-primary me-3" role="status"></div>
+                  <span className="text-secondary fw-semibold">Loading component categories...</span>
+                </div>
+              ) : categories.length === 0 ? (
+                <div className="text-center py-5 bg-white rounded-4 border">
+                  <i className="bi bi-folder2-open fs-1 text-muted d-block mb-2"></i>
+                  <h6 className="text-dark fw-bold mb-1">No Categories Found</h6>
+                  <p className="small text-secondary mb-0">
+                    Active categories added from the dashboard will appear here.
+                  </p>
+                </div>
+              ) : (
+                <div className="cat-swiper-wrapper">
+                  <SwiperReact
+                    key={`cat-swiper-centered-${slideList.length}`}
+                    modules={[Navigation, Autoplay]}
+                    centeredSlides={true}
+                    centeredSlidesBounds={false}
+                    initialSlide={2}
+                    loop={true}
+                    speed={650}
+                    autoplay={{
+                      delay: 3200,
+                      disableOnInteraction: false,
+                      pauseOnMouseEnter: true,
+                    }}
+                    navigation={{
+                      prevEl: '.swiper-cat-prev',
+                      nextEl: '.swiper-cat-next',
+                    }}
+                    breakpoints={{
+                      320: {
+                        slidesPerView: 1.3,
+                        spaceBetween: 14,
+                      },
+                      480: {
+                        slidesPerView: 1.8,
+                        spaceBetween: 16,
+                      },
+                      640: {
+                        slidesPerView: 2.6,
+                        spaceBetween: 18,
+                      },
+                      860: {
+                        slidesPerView: 3.4,
+                        spaceBetween: 20,
+                      },
+                      1140: {
+                        slidesPerView: 4.4,
+                        spaceBetween: 22,
+                      },
+                      1440: {
+                        slidesPerView: 5.4,
+                        spaceBetween: 24,
+                      },
+                    }}
+                    className="category-swiper"
+                  >
+                    {slideList.map((cat, index) => {
+                      const rawName = cat.category || cat.name || 'Category';
+                      const displayTitle = getCategoryDisplayTitle(rawName);
+                      const description = getCategoryDescription(rawName, cat.description);
+                      const fallbackAsset = getMatchedAsset(rawName);
+                      const imageUrl = cat.image && typeof cat.image === 'string' && cat.image.trim()
+                        ? formatImg(cat.image, fallbackAsset)
+                        : fallbackAsset;
+
+                      return (
+                        <SwiperSlide key={`${cat._id || cat.id || 'cat'}-${index}`}>
+                          <div
+                            className="cat-card w-100"
+                            onClick={() => handleCategoryClick(rawName)}
+                            title={`Explore ${displayTitle}`}
+                          >
+                            {/* Centered Circular Halo Stage */}
+                            <div className="cat-halo-stage">
+                              <img
+                                src={imageUrl}
+                                alt={displayTitle}
+                                className="cat-image"
+                                loading="lazy"
+                                onError={(e) => {
+                                  e.target.onerror = null;
+                                  e.target.src = fallbackAsset;
+                                }}
+                              />
+                            </div>
+
+                            {/* Category Title */}
+                            <h3 className="cat-title">{displayTitle}</h3>
+
+                            {/* Curated Description */}
+                            <p className="cat-desc">{description}</p>
+
+                            {/* Centered Action Link */}
+                            <div className="cat-explore-link">
+                              Explore products
+                              <i className="bi bi-chevron-right ms-1"></i>
+                            </div>
+                          </div>
+                        </SwiperSlide>
+                      );
+                    })}
+                  </SwiperReact>
+                </div>
+              )}
+            </div>
           </div>
         </div>
-
-        {/* Loading Spinner */}
-        {loading ? (
-          <div className="d-flex justify-content-center align-items-center py-5">
-            <div className="spinner-border text-primary me-3" role="status"></div>
-            <span className="text-secondary fw-semibold">Loading component categories...</span>
-          </div>
-        ) : categories.length === 0 ? (
-          <div className="text-center py-5 bg-white rounded-4 border">
-            <i className="bi bi-folder2-open fs-1 text-muted d-block mb-2"></i>
-            <h6 className="text-dark fw-bold mb-1">No Categories Found</h6>
-            <p className="small text-secondary mb-0">
-              Active categories added from the dashboard will appear here.
-            </p>
-          </div>
-        ) : (
-          /* Centered Swiper Carousel */
-          <div className="cat-swiper-wrapper">
-            <SwiperReact
-              key={`cat-swiper-centered-${slideList.length}`}
-              modules={[Navigation, Autoplay]}
-              centeredSlides={true}
-              centeredSlidesBounds={false}
-              initialSlide={2}
-              loop={true}
-              speed={650}
-              autoplay={{
-                delay: 3200,
-                disableOnInteraction: false,
-                pauseOnMouseEnter: true,
-              }}
-              navigation={{
-                prevEl: '.swiper-cat-prev',
-                nextEl: '.swiper-cat-next',
-              }}
-              breakpoints={{
-                320: {
-                  slidesPerView: 1.3,
-                  spaceBetween: 14,
-                },
-                480: {
-                  slidesPerView: 1.8,
-                  spaceBetween: 16,
-                },
-                640: {
-                  slidesPerView: 2.6,
-                  spaceBetween: 18,
-                },
-                860: {
-                  slidesPerView: 3.4,
-                  spaceBetween: 20,
-                },
-                1140: {
-                  slidesPerView: 4.4,
-                  spaceBetween: 22,
-                },
-                1440: {
-                  slidesPerView: 5.4,
-                  spaceBetween: 24,
-                },
-              }}
-              className="category-swiper"
-            >
-              {slideList.map((cat, index) => {
-                const rawName = cat.category || cat.name || 'Category';
-                const displayTitle = getCategoryDisplayTitle(rawName);
-                const description = getCategoryDescription(rawName, cat.description);
-                const fallbackAsset = getMatchedAsset(rawName);
-                const imageUrl = cat.image && typeof cat.image === 'string' && cat.image.trim()
-                  ? formatImg(cat.image, fallbackAsset)
-                  : fallbackAsset;
-
-                return (
-                  <div class="row">
-                    <div class="col-sm-11 mx-auto">
-                  <SwiperSlide key={`${cat._id || cat.id || 'cat'}-${index}`}>
-                    <div
-                      className="cat-card w-100"
-                      onClick={() => handleCategoryClick(rawName)}
-                      title={`Explore ${displayTitle}`}
-                    >
-                      {/* Centered Circular Halo Stage */}
-                      <div className="cat-halo-stage">
-                        <img
-                          src={imageUrl}
-                          alt={displayTitle}
-                          className="cat-image"
-                          loading="lazy"
-                          onError={(e) => {
-                            e.target.onerror = null;
-                            e.target.src = fallbackAsset;
-                          }}
-                        />
-                      </div>
-
-                      {/* Category Title */}
-                      <h3 className="cat-title">{displayTitle}</h3>
-
-                      {/* Curated Description */}
-                      <p className="cat-desc">{description}</p>
-
-                      {/* Centered Action Link */}
-                      <div className="cat-explore-link">
-                        Explore products
-                        <i className="bi bi-chevron-right ms-1"></i>
-                      </div>
-                    </div>
-                  </SwiperSlide>
-                  </div>
-                  </div>
-                
-                );
-              })}
-            </SwiperReact>
-          </div>
-        )}
-      </div>
-      </div>
-      </div>
       </div>
     </section>
   );
