@@ -14,6 +14,7 @@ const FeaturedProducts = () => {
   const [loading, setLoading] = useState(true);
   const [cardImageIndexMap, setCardImageIndexMap] = useState({});
   const [quickViewProduct, setQuickViewProduct] = useState(null);
+  const [hasError, setHasError] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 8;
 
@@ -22,6 +23,7 @@ const FeaturedProducts = () => {
     const fetchFeatured = async () => {
       try {
         setLoading(true);
+        setHasError(false);
         const res = await axios.get(`${API_BASE_URL}/api/product/show`);
         if (!isMounted) return;
         if (Array.isArray(res.data) && res.data.length > 0) {
@@ -33,8 +35,12 @@ const FeaturedProducts = () => {
         } else {
           setProducts([]);
         }
-      } catch {
-        if (isMounted) setProducts([]);
+      } catch (err) {
+        console.error('Error fetching featured products:', err.message);
+        if (isMounted) {
+          setProducts([]);
+          setHasError(true);
+        }
       } finally {
         if (isMounted) setLoading(false);
       }
@@ -73,6 +79,18 @@ const FeaturedProducts = () => {
 
   // If loading finished and no featured products enabled by admin, hide or show empty message
   if (!loading && products.length === 0) {
+    if (hasError) {
+      return (
+        <section className="featured-products-section py-4">
+          <div className="container text-center py-3">
+            <p className="text-muted small mb-0">
+              <i className="bi bi-exclamation-circle me-1 text-warning"></i>
+              Unable to connect to server. Please ensure backend server is running on port 5000.
+            </p>
+          </div>
+        </section>
+      );
+    }
     return null;
   }
 

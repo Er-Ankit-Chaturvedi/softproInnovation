@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Swiper as SwiperReact, SwiperSlide } from 'swiper/react';
-import { Navigation, Autoplay } from 'swiper/modules';
+import { Navigation, Autoplay, Pagination } from 'swiper/modules';
 import { API_BASE_URL } from '../config/api';
 import { formatImg } from '../utils/imageUrl';
 import './CategorySwiper.css';
@@ -10,6 +10,7 @@ import './CategorySwiper.css';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/autoplay';
+import 'swiper/css/pagination';
 
 // Pristine assets tailored to category families
 import imgCommunication from '../assets/cat-communication.png';
@@ -200,14 +201,15 @@ const Swiper = () => {
   const slideList = categories.length > 0 && categories.length < 12
     ? [...categories, ...categories]
     : categories;
+
   return (
     <section className="category-swiper-section">
-      <div className="container-fluid">
-        <div className="row">
-          <div className="col-sm-11 mx-auto overflow-hidden">
+      <div className="container-fluid px-0 px-sm-3">
+        <div className="row g-0">
+          <div className="col-12 col-sm-11 mx-auto overflow-hidden">
             <div className="container-fluid cat-swiper-outer">
               {/* Header Section */}
-              <div className="cat-header-row mb-4 pb-2">
+              <div className="cat-header-row mb-3 mb-md-4 pb-2">
                 <div>
                   <div className="cat-eyebrow">BROWSE BY TYPE</div>
                   <h2 className="cat-section-title mb-2">
@@ -218,8 +220,8 @@ const Swiper = () => {
                   </p>
                 </div>
 
-                {/* Navigation Controls (< >) */}
-                <div className="cat-nav-controls mt-3 mt-md-0">
+                {/* Desktop Navigation Controls (< >) */}
+                <div className="cat-nav-controls d-none d-md-flex mt-3 mt-md-0">
                   <button
                     type="button"
                     className="cat-nav-btn swiper-cat-prev"
@@ -257,14 +259,14 @@ const Swiper = () => {
                 <div className="cat-swiper-wrapper">
                   <SwiperReact
                     key={`cat-swiper-centered-${slideList.length}`}
-                    modules={[Navigation, Autoplay]}
+                    modules={[Navigation, Autoplay, Pagination]}
                     centeredSlides={true}
                     centeredSlidesBounds={false}
                     initialSlide={2}
                     loop={true}
-                    speed={650}
+                    speed={550}
                     autoplay={{
-                      delay: 3200,
+                      delay: 3500,
                       disableOnInteraction: false,
                       pauseOnMouseEnter: true,
                     }}
@@ -272,29 +274,34 @@ const Swiper = () => {
                       prevEl: '.swiper-cat-prev',
                       nextEl: '.swiper-cat-next',
                     }}
+                    pagination={{
+                      el: '.cat-swiper-pagination',
+                      clickable: true,
+                      dynamicBullets: true,
+                    }}
                     breakpoints={{
                       320: {
-                        slidesPerView: 1.3,
+                        slidesPerView: 1.22,
                         spaceBetween: 14,
                       },
                       480: {
-                        slidesPerView: 1.8,
+                        slidesPerView: 1.6,
                         spaceBetween: 16,
                       },
                       640: {
-                        slidesPerView: 2.6,
+                        slidesPerView: 2.3,
                         spaceBetween: 18,
                       },
                       860: {
-                        slidesPerView: 3.4,
+                        slidesPerView: 3.2,
                         spaceBetween: 20,
                       },
                       1140: {
-                        slidesPerView: 4.4,
+                        slidesPerView: 4.2,
                         spaceBetween: 22,
                       },
                       1440: {
-                        slidesPerView: 5.4,
+                        slidesPerView: 5.2,
                         spaceBetween: 24,
                       },
                     }}
@@ -338,7 +345,7 @@ const Swiper = () => {
 
                             {/* Centered Action Link */}
                             <div className="cat-explore-link">
-                              Explore products
+                              <span>Explore products</span>
                               <i className="bi bi-chevron-right ms-1"></i>
                             </div>
                           </div>
@@ -346,6 +353,27 @@ const Swiper = () => {
                       );
                     })}
                   </SwiperReact>
+
+                  {/* Mobile Bottom Controls */}
+                  <div className="cat-swiper-footer d-flex align-items-center justify-content-center gap-3 mt-3 pt-2">
+                    <button
+                      type="button"
+                      className="cat-mobile-nav-btn swiper-cat-prev d-flex d-md-none"
+                      aria-label="Previous Category"
+                      title="Previous"
+                    >
+                      <i className="bi bi-chevron-left"></i>
+                    </button>
+
+                    <button
+                      type="button"
+                      className="cat-mobile-nav-btn swiper-cat-next d-flex d-md-none"
+                      aria-label="Next Category"
+                      title="Next"
+                    >
+                      <i className="bi bi-chevron-right"></i>
+                    </button>
+                  </div>
                 </div>
               )}
             </div>

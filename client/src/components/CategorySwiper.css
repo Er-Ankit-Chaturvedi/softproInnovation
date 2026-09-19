@@ -213,17 +213,26 @@
 /* Centered "Explore products" Action Link */
 .cat-explore-link {
   margin-top: auto;
-  font-size: 0.88rem;
-  font-weight: 600;
-  color: #475569;
+  font-size: 0.86rem;
+  font-weight: 700;
+  color: #2563eb;
+  background: #eff6ff;
+  border: 1px solid #dbeafe;
+  padding: 7px 18px;
+  border-radius: 999px;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  transition: all 0.25s ease;
+  gap: 6px;
+  box-shadow: 0 2px 6px rgba(37, 99, 235, 0.06);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.cat-card:hover .cat-explore-link {
-  color: #2563eb;
+.cat-card:hover .cat-explore-link,
+.cat-card:active .cat-explore-link {
+  background: #2563eb;
+  color: #ffffff;
+  border-color: #2563eb;
+  box-shadow: 0 4px 14px rgba(37, 99, 235, 0.3);
 }
 
 .cat-explore-link i {
@@ -239,7 +248,7 @@
    Swiper Styles & Slide Sizing
    -------------------------------------------------------------------------- */
 .category-swiper {
-  padding: 14px 4px 22px !important;
+  padding: 16px 4px 24px !important;
   overflow: visible !important;
   width: 100%;
 }
@@ -248,10 +257,10 @@
   height: auto;
   display: flex;
   align-items: stretch;
-  transition: transform 0.35s ease, opacity 0.35s ease;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, filter 0.4s ease;
 }
 
-/* Responsive tuning */
+/* Mobile & Tablet Spotlight Effect: Focused center card, dimmed side peeks */
 @media (max-width: 767.98px) {
   .cat-header-row {
     align-items: center !important;
@@ -261,6 +270,7 @@
   .cat-section-desc {
     margin-left: auto !important;
     margin-right: auto !important;
+    font-size: 14px !important;
   }
 
   .cat-nav-controls {
@@ -268,29 +278,116 @@
     margin-left: auto !important;
     margin-right: auto !important;
   }
+
+  .category-swiper .swiper-slide {
+    opacity: 0.36;
+    transform: scale(0.9);
+    filter: blur(0.4px);
+    pointer-events: auto;
+  }
+
+  .category-swiper .swiper-slide-active {
+    opacity: 1 !important;
+    transform: scale(1) !important;
+    filter: none !important;
+    z-index: 5;
+  }
+
+  .category-swiper .swiper-slide-active .cat-card {
+    border-color: rgba(37, 99, 235, 0.32);
+    box-shadow: 0 16px 36px -6px rgba(37, 99, 235, 0.16), 0 4px 14px rgba(15, 23, 42, 0.05);
+  }
 }
 
+/* Mobile specific layout and sizing (< 576px) */
 @media (max-width: 575.98px) {
   .category-swiper-section {
-    padding: 50px 0 60px;
+    padding: 44px 0 52px;
   }
+
+  .cat-swiper-outer {
+    padding: 0 4px !important;
+  }
+
+  .cat-section-title {
+    font-size: clamp(1.75rem, 6.8vw, 2.2rem) !important;
+  }
+
   .cat-card {
-    padding: 22px 16px 20px;
+    padding: 24px 18px 20px;
+    border-radius: 22px;
+    background: #ffffff;
   }
+
   .cat-halo-stage {
-    width: 86px;
-    height: 86px;
+    width: 92px;
+    height: 92px;
     margin-bottom: 16px;
+    background: radial-gradient(circle at 50% 50%, #eff6ff 0%, #dbeafe 100%);
+    border: 2px solid #bfdbfe;
+    box-shadow: 0 0 0 8px rgba(239, 246, 255, 0.9);
   }
+
   .cat-image {
-    max-width: 54px;
-    max-height: 54px;
+    max-width: 58px;
+    max-height: 58px;
   }
+
   .cat-title {
-    font-size: 0.98rem;
+    font-size: 1.15rem;
+    font-weight: 800;
+    margin-bottom: 6px;
+    color: #0f172a;
   }
+
   .cat-desc {
-    font-size: 0.8rem;
-    min-height: 58px;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: #64748b;
+    margin-bottom: 16px;
+    min-height: 48px;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
+}
+
+/* --------------------------------------------------------------------------
+   Mobile Bottom Controls
+   -------------------------------------------------------------------------- */
+.cat-swiper-footer {
+  position: relative;
+  z-index: 10;
+}
+
+.cat-mobile-nav-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #ffffff;
+  border: 1.5px solid #e2e8f0;
+  color: #2563eb;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  outline: none;
+}
+
+.cat-mobile-nav-btn:hover {
+  background: #eff6ff;
+  border-color: #2563eb;
+  color: #1d4ed8;
+  box-shadow: 0 6px 16px rgba(37, 99, 235, 0.2);
+}
+
+.cat-mobile-nav-btn:active {
+  transform: scale(0.92);
+  background: #2563eb;
+  border-color: #2563eb;
+  color: #ffffff;
 }
