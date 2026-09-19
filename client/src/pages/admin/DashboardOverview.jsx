@@ -567,7 +567,7 @@ const DashboardOverview = () => {
             <div className="pt-3 border-top">
               <div className="d-flex align-items-center justify-content-between mb-2">
                 <span className="fw-semibold text-dark" style={{ fontSize: '13px' }}>System Status</span>
-                <span className="text-muted" style={{ fontSize: '11px' }}>Local Cluster</span>
+                <span className="text-muted" style={{ fontSize: '11px' }}>Cloud Service</span>
               </div>
 
               <div className="d-diag-row">
@@ -575,7 +575,7 @@ const DashboardOverview = () => {
                   <i className="bi bi-hdd-network me-1.5 text-primary"></i> Backend API Server
                 </span>
                 <span className="d-diag-status d-diag-ok">
-                  <span className="d-live-pulse" style={{ width: '6px', height: '6px' }}></span> Port 5000 Active
+                  <span className="d-live-pulse" style={{ width: '6px', height: '6px' }}></span> Cloud API Active
                 </span>
               </div>
 

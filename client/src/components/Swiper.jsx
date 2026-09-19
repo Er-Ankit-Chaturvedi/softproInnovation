@@ -69,36 +69,6 @@ const getCategoryDisplayTitle = (rawName) => {
   return rawName || 'Category';
 };
 
-// Rich curated descriptions matching the user reference screenshot
-const getCategoryDescription = (rawName, customDesc) => {
-  if (customDesc && !customDesc.toLowerCase().endsWith('- iot products') && customDesc.trim().length > 15) {
-    return customDesc.trim();
-  }
-  const n = (rawName || '').trim().toLowerCase();
-  if (n.includes('communication') || n.includes('wireless')) {
-    return 'Wireless and wired modules for Bluetooth, Wi-Fi, GSM, GPS, and serial communication.';
-  }
-  if (n.includes('motor') || n.includes('actuator')) {
-    return 'Motors and motor accessories for movement, rotation, robotics, and automation projects.';
-  }
-  if (n.includes('display') || n.includes('indicator') || n.includes('screen') || n.includes('oled') || n.includes('lcd')) {
-    return 'Visual and audible components such as LEDs, buzzers, and signal indicators for project feedback.';
-  }
-  if (n.includes('sensor')) {
-    return 'Components that detect temperature, motion, light, distance, sound, and other physical conditions.';
-  }
-  if (n.includes('microcontroller') || n.includes('mcu') || n.includes('board') || n.includes('development')) {
-    return 'Compact programmable chips used to control electronic circuits and embedded projects.';
-  }
-  if (n.includes('power') || n.includes('battery')) {
-    return 'Reliable power supplies, lithium batteries, regulators, and converters for electronic prototypes.';
-  }
-  if (n.includes('iot') || n.includes('kit')) {
-    return 'Complete all-in-one prototyping kits and modular kits for robotics and connected IoT applications.';
-  }
-  return 'Curated electronic modules, components, and hardware essentials engineered for innovative projects.';
-};
-
 // Baseline order matching user's preferred layout
 const initialCategories = [
   {
@@ -310,7 +280,6 @@ const Swiper = () => {
                     {slideList.map((cat, index) => {
                       const rawName = cat.category || cat.name || 'Category';
                       const displayTitle = getCategoryDisplayTitle(rawName);
-                      const description = getCategoryDescription(rawName, cat.description);
                       const fallbackAsset = getMatchedAsset(rawName);
                       const imageUrl = cat.image && typeof cat.image === 'string' && cat.image.trim()
                         ? formatImg(cat.image, fallbackAsset)
@@ -339,9 +308,6 @@ const Swiper = () => {
 
                             {/* Category Title */}
                             <h3 className="cat-title">{displayTitle}</h3>
-
-                            {/* Curated Description */}
-                            <p className="cat-desc">{description}</p>
 
                             {/* Centered Action Link */}
                             <div className="cat-explore-link">

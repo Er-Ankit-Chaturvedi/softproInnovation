@@ -760,17 +760,93 @@
 /* Responsive adjustments */
 @media (max-width: 576px) {
   .featured-products-section {
-    padding: 50px 0 60px;
+    padding: 40px 0 50px;
   }
+
+  .featured-card {
+    border-radius: 14px;
+  }
+
+  .featured-image-stage {
+    height: 145px;
+    padding: 10px;
+  }
+
+  .featured-product-image {
+    max-height: 115px;
+  }
+
+  .featured-badge-stack {
+    top: 8px;
+    left: 8px;
+    gap: 4px;
+  }
+
+  .badge-featured-pro,
+  .badge-discount-pro {
+    font-size: 9.5px;
+    padding: 2px 6px;
+  }
+
+  .featured-wishlist-btn {
+    top: 8px;
+    right: 8px;
+    width: 28px;
+    height: 28px;
+    font-size: 13px;
+  }
+
   .featured-card-body {
-    padding: 14px;
+    padding: 10px 10px 12px;
   }
+
+  .featured-category-badge {
+    font-size: 9.5px;
+    padding: 2px 6px;
+    max-width: 90px;
+  }
+
+  .featured-card-title {
+    font-size: 12.5px;
+    min-height: 32px;
+    margin-bottom: 6px;
+  }
+
+  .featured-tech-row {
+    display: none;
+  }
+
+  .featured-pricing-box {
+    margin-bottom: 8px;
+    padding-top: 6px;
+  }
+
+  .featured-current-price {
+    font-size: 15.5px;
+  }
+
+  .featured-compare-price {
+    font-size: 11px;
+  }
+
+  .featured-save-pill {
+    font-size: 9.5px;
+    padding: 1px 5px;
+  }
+
   .featured-actions-bar {
-    flex-direction: column;
-    gap: 6px;
+    flex-direction: row;
+    gap: 4px;
   }
+
   .featured-btn-cart,
   .featured-btn-buy {
-    width: 100%;
+    flex: 1;
+    width: auto;
+    padding: 6px 4px;
+    font-size: 11px;
+    border-radius: 8px;
+    gap: 3px;
+    white-space: nowrap;
   }
 }

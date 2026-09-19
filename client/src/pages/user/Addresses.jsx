@@ -147,7 +147,7 @@ const Addresses = () => {
     try {
       if (editingId) {
         // Update existing address
-        const res = await axios.put(`http://localhost:5000/api/address/update/${editingId}`,{
+        const res = await axios.put(`${API_BASE_URL}/api/address/update/${editingId}`, {
           ...formData,
           user_id: userId
         });
@@ -160,7 +160,7 @@ const Addresses = () => {
         }
       } else {
         // Add new address
-        const res = await axios.post('http://localhost:5000/api/address/add', {
+        const res = await axios.post(`${API_BASE_URL}/api/address/add`, {
           ...formData,
           user_id: userId
         });
@@ -183,7 +183,7 @@ const Addresses = () => {
   const handleSetDefault = async (addressId) => {
     try {
       const userId = user._id || user.id;
-      const res = await axios.put(`http://localhost:5000/api/address/set-default/${addressId}`);
+      const res = await axios.put(`${API_BASE_URL}/api/address/set-default/${addressId}`);
       if (res.data.success) {
         showAlert('success', 'Default address updated!');
         fetchAddresses(userId);

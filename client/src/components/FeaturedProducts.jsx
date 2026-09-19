@@ -85,7 +85,7 @@ const FeaturedProducts = () => {
           <div className="container text-center py-3">
             <p className="text-muted small mb-0">
               <i className="bi bi-exclamation-circle me-1 text-warning"></i>
-              Unable to connect to server. Please ensure backend server is running on port 5000.
+              Unable to connect to server. Please ensure backend server is reachable.
             </p>
           </div>
         </section>
@@ -135,7 +135,7 @@ const FeaturedProducts = () => {
         ) : (
           /* Product Grid - Shows strictly admin-enabled featured products */
           <>
-            <div className="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-4">
+            <div className="row row-cols-2 row-cols-sm-2 row-cols-lg-3 row-cols-xl-4 g-2 g-sm-3 g-lg-4">
               {paginatedProducts.map((item, index) => {
               const id = item._id || item.id || index;
               const catName =
@@ -341,7 +341,8 @@ const FeaturedProducts = () => {
                           title="Add to Cart"
                         >
                           <i className="bi bi-cart-plus"></i>
-                          <span>Add to Cart</span>
+                          <span className="d-none d-sm-inline">Add to Cart</span>
+                          <span className="d-inline d-sm-none">Cart</span>
                         </button>
 
                         <button
@@ -356,7 +357,8 @@ const FeaturedProducts = () => {
                           title="Buy Now"
                         >
                           <i className="bi bi-lightning-charge-fill"></i>
-                          <span>Buy Now</span>
+                          <span className="d-none d-sm-inline">Buy Now</span>
+                          <span className="d-inline d-sm-none">Buy</span>
                         </button>
                       </div>
                     </div>

@@ -7,6 +7,7 @@ import { useCart } from '../../context/CartContext'
 import QuickViewModal from '../../components/QuickViewModal'
 import { API_BASE_URL } from '../../config/api'
 import { formatImg } from '../../utils/imageUrl'
+import './Product.css'
 
 const Product = () => {
   const navigate = useNavigate()
@@ -204,7 +205,7 @@ const Product = () => {
   }, [allProductsList, selectedCategory, searchTerm, sortBy])
 
   const [currentPage, setCurrentPage] = useState(1)
-  const [itemsPerPage, setItemsPerPage] = useState(5)
+  const [itemsPerPage, setItemsPerPage] = useState(8)
 
   // Reset page when filters, sorting or itemsPerPage change
   useEffect(() => {
@@ -392,30 +393,40 @@ const Product = () => {
       <section id="productCatalogGrid" className="product-catalog-section py-5">
         <div className="container-fluid px-3 px-xl-5">
           {/* Top Search, Per Page & Sort Control Bar */}
-          <div className="d-flex flex-column flex-md-row align-items-center justify-content-between gap-3 mb-4">
+          <div className="product-toolbar-row mb-3 mb-md-4">
             {/* Search Input Box */}
-            <div className="position-relative w-100" style={{ maxWidth: '340px' }}>
+            <div className="product-search-box">
+              <i className="bi bi-search product-search-icon"></i>
               <input
                 type="text"
-                className="form-control product-search-input pe-4 text-start"
-                placeholder="Search products..."
+                className="form-control product-search-input"
+                placeholder="Search products by name, category..."
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
               />
-              <i className="bi bi-search product-search-icon"></i>
+              {searchTerm && (
+                <button
+                  type="button"
+                  className="product-search-clear-btn"
+                  onClick={() => setSearchTerm('')}
+                  title="Clear search"
+                  aria-label="Clear search"
+                >
+                  <i className="bi bi-x"></i>
+                </button>
+              )}
             </div>
 
-            {/* Right Controls: Items Per Page & Sort */}
-            <div className="d-flex flex-wrap align-items-center gap-3 ms-md-auto">
-              <div className="d-flex align-items-center gap-2">
-                <span className="text-muted" style={{ fontSize: '14px' }}>Show:</span>
+            {/* Controls: Per Page & Sort */}
+            <div className="product-controls-wrapper">
+              <div className="product-control-pill">
+                <i className="bi bi-grid text-muted fs-6"></i>
                 <select
                   className="form-select product-sort-select"
                   value={itemsPerPage}
                   onChange={(e) => setItemsPerPage(Number(e.target.value))}
-                  style={{ minWidth: '105px' }}
+                  aria-label="Items per page"
                 >
-                  <option value={5}>5 / page</option>
                   <option value={8}>8 / page</option>
                   <option value={12}>12 / page</option>
                   <option value={24}>24 / page</option>
@@ -423,12 +434,13 @@ const Product = () => {
                 </select>
               </div>
 
-              <div className="d-flex align-items-center gap-2">
-                <span className="text-muted" style={{ fontSize: '14px' }}>Sort:</span>
+              <div className="product-control-pill">
+                <i className="bi bi-sort-down text-muted fs-6"></i>
                 <select
                   className="form-select product-sort-select"
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value)}
+                  aria-label="Sort products by"
                 >
                   <option value="Featured">Featured</option>
                   <option value="Price: Low to High">Price: Low to High</option>
@@ -439,13 +451,13 @@ const Product = () => {
             </div>
           </div>
 
-          {/* Minimalist Seamless Category Pills Stream (No bulky card/header) */}
-          <div className="product-category-stream-wrapper mb-4 position-relative">
-            {/* Left Scroll Chevron Arrow */}
+          {/* Minimalist Seamless Category Pills Stream */}
+          <div className="product-category-stream-wrapper mb-3 mb-md-4 position-relative">
+            {/* Left Scroll Chevron Arrow (Desktop only) */}
             {canScrollLeft && (
               <button
                 type="button"
-                className="category-stream-arrow-btn left"
+                className="category-stream-arrow-btn left d-none d-md-flex"
                 onClick={() => scrollCategories('left')}
                 title="Scroll categories left"
                 aria-label="Scroll categories left"
@@ -455,14 +467,14 @@ const Product = () => {
             )}
 
             {/* Left Fade Gradient Mask */}
-            {canScrollLeft && <div className="category-stream-fade-left"></div>}
+            {canScrollLeft && <div className="category-stream-fade-left d-none d-md-block"></div>}
 
             {/* Scrollable Category Pills Row */}
             <div
               ref={categoryScrollRef}
               className="category-stream-track"
             >
-              {/* Reset Filter Pill (Visible if a specific category is chosen) */}
+              {/* Reset Filter Pill */}
               {selectedCategory !== 'All' && (
                 <button
                   type="button"
@@ -470,8 +482,8 @@ const Product = () => {
                   onClick={() => setSelectedCategory('All')}
                   title="Clear category filter"
                 >
-                  <i className="bi bi-x-circle-fill text-danger me-1"></i>
-                  <span>Clear Filter</span>
+                  <i className="bi bi-x-circle-fill text-danger"></i>
+                  <span>Clear</span>
                 </button>
               )}
 
@@ -501,13 +513,13 @@ const Product = () => {
             </div>
 
             {/* Right Fade Gradient Mask */}
-            {canScrollRight && <div className="category-stream-fade-right"></div>}
+            {canScrollRight && <div className="category-stream-fade-right d-none d-md-block"></div>}
 
-            {/* Right Scroll Chevron Arrow */}
+            {/* Right Scroll Chevron Arrow (Desktop only) */}
             {canScrollRight && (
               <button
                 type="button"
-                className="category-stream-arrow-btn right"
+                className="category-stream-arrow-btn right d-none d-md-flex"
                 onClick={() => scrollCategories('right')}
                 title="Scroll categories right"
                 aria-label="Scroll categories right"
@@ -518,19 +530,22 @@ const Product = () => {
           </div>
 
           {/* Showing Count & Current Page Status */}
-          <div className="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-4">
-            <span className="text-muted" style={{ fontSize: '14px' }}>
+          <div className="product-status-bar mb-3 mb-md-4">
+            <div className="product-status-left">
               {totalItems > 0 ? (
                 <>
-                  Showing <strong className="text-dark">{startIndex + 1}&ndash;{endIndex}</strong> of{' '}
-                  <strong className="text-dark">{totalItems}</strong> products
+                  <span className="text-muted">Showing </span>
+                  <strong className="text-dark">{startIndex + 1}&ndash;{endIndex}</strong>
+                  <span className="text-muted"> of </span>
+                  <strong className="text-dark">{totalItems}</strong>
+                  <span className="text-muted"> products</span>
                   {selectedCategory !== 'All' && (
-                    <span className="badge bg-light text-primary border ms-2">
+                    <span className="badge category-indicator-chip ms-1">
                       {selectedCategory}
                     </span>
                   )}
                   {searchTerm && (
-                    <span className="badge bg-light text-secondary border ms-2">
+                    <span className="badge bg-light text-secondary border ms-1">
                       &ldquo;{searchTerm}&rdquo;
                     </span>
                   )}
@@ -538,12 +553,12 @@ const Product = () => {
               ) : (
                 <span>No products found</span>
               )}
-            </span>
+            </div>
 
             {totalItems > 0 && totalPages > 1 && (
-              <span className="text-muted small">
-                Page <strong className="text-dark">{currentPage}</strong> of <strong className="text-dark">{totalPages}</strong>
-              </span>
+              <div className="text-muted small">
+                Page <strong className="text-dark">{currentPage}</strong> / <strong className="text-dark">{totalPages}</strong>
+              </div>
             )}
           </div>
 
@@ -570,8 +585,8 @@ const Product = () => {
               </button>
             </div>
           ) : (
-            /* 3 Rows x 4 Columns Product Grid */
-            <div className="row g-3 g-md-4">
+            /* Modern Responsive Grid: 2 Columns on Mobile, 3 on Tablet, 4 on Desktop */
+            <div className="row g-2 g-sm-3 g-md-4">
               {paginatedProducts.map((item) => {
               const pId = item._id || item.id
               const isFav = isInWishlist(pId)
@@ -605,33 +620,22 @@ const Product = () => {
               }
 
               return (
-                <div key={pId} className="col-12 col-sm-6 col-md-6 col-lg-3">
-                  <div
-                    className="card h-100 overflow-hidden shadow-sm position-relative border-0 rounded-3"
-                    style={{ transition: 'transform 0.3s ease, box-shadow 0.3s ease' }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.transform = 'translateY(-8px)'
-                      e.currentTarget.style.boxShadow = '0 15px 30px rgba(0,0,0,0.1)'
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.transform = 'translateY(0)'
-                      e.currentTarget.style.boxShadow = '0 0.125rem 0.25rem rgba(0,0,0,0.075)'
-                    }}
-                  >
+                <div key={pId} className="col-6 col-md-4 col-lg-3">
+                  <div className="card pro-card-modern h-100 overflow-hidden shadow-sm position-relative border-0 rounded-3">
                     {/* Badges */}
-                    <div className="position-absolute top-0 start-0 p-2 z-3 d-flex flex-column gap-1 mt-2 ms-2">
+                    <div className="pro-card-badges position-absolute top-0 start-0 z-3 d-flex flex-column gap-1">
                       {discountPercent > 0 && (
-                        <span className="badge bg-warning text-dark rounded-1 px-2 py-1 shadow-sm fw-bold" style={{ fontSize: '11px', letterSpacing: '0.5px' }}>
+                        <span className="badge bg-warning text-dark pro-badge-discount fw-bold shadow-sm">
                           {discountPercent}% OFF
                         </span>
                       )}
                       {item.badge && (
-                        <span className={`badge ${item.badge === 'New' ? 'bg-success' : 'bg-primary'} rounded-1 px-2 py-1 shadow-sm fw-semibold`} style={{ fontSize: '11px', letterSpacing: '0.5px' }}>
+                        <span className={`badge ${item.badge === 'New' ? 'bg-success' : 'bg-primary'} pro-badge-pill shadow-sm fw-semibold`}>
                           {item.badge}
                         </span>
                       )}
                       {item.featured && !item.badge && discountPercent === 0 && (
-                        <span className="badge bg-info text-dark rounded-1 px-2 py-1 shadow-sm fw-semibold" style={{ fontSize: '11px', letterSpacing: '0.5px' }}>
+                        <span className="badge bg-info text-dark pro-badge-pill shadow-sm fw-semibold">
                           Featured
                         </span>
                       )}
@@ -640,16 +644,7 @@ const Product = () => {
                     {/* Wishlist Button (Always visible on top right) */}
                     <button
                       type="button"
-                      className="btn rounded-circle position-absolute top-0 end-0 m-3 shadow-sm d-flex align-items-center justify-content-center p-0 border"
-                      style={{
-                        width: '36px',
-                        height: '36px',
-                        transition: 'all 0.25s ease',
-                        backgroundColor: isFav ? '#fee2e2' : 'rgba(255,255,255,0.95)',
-                        borderColor: isFav ? '#fca5a5' : '#e2e8f0',
-                        cursor: 'pointer',
-                        zIndex: 20
-                      }}
+                      className={`btn pro-card-wishlist-btn rounded-circle position-absolute top-0 end-0 shadow-sm d-flex align-items-center justify-content-center p-0 border ${isFav ? 'active' : ''}`}
                       onClick={(e) => {
                         e.preventDefault()
                         e.stopPropagation()
@@ -658,23 +653,23 @@ const Product = () => {
                       title={isFav ? "Remove from Wishlist" : "Add to Wishlist"}
                       aria-label="Wishlist"
                     >
-                      <i className={`bi ${isFav ? 'bi-heart-fill text-danger' : 'bi-heart text-secondary'} fs-6`}></i>
+                      <i className={`bi ${isFav ? 'bi-heart-fill text-danger' : 'bi-heart text-secondary'}`}></i>
                     </button>
 
-                    {/* Image Section with Quick View Hover & Slider Arrows */}
-                    <div className="product-img-box d-flex align-items-center justify-content-center p-4 position-relative overflow-hidden bg-white" style={{ height: '230px' }}>
-                      <img
-                        src={currentActiveImg}
-                        alt={item.name}
-                        className="img-fluid"
-                        style={{ maxHeight: '160px', objectFit: 'contain', transition: 'transform 0.4s ease' }}
-                        onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.08)'}
-                        onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                      />
+                    {/* Image Section */}
+                    <div className="product-img-box d-flex align-items-center justify-content-center position-relative overflow-hidden bg-white">
+                      <Link to={`/product/${pId}`} className="d-flex align-items-center justify-content-center w-100 h-100 text-decoration-none">
+                        <img
+                          src={currentActiveImg}
+                          alt={item.name}
+                          className="img-fluid pro-card-img"
+                          loading="lazy"
+                        />
+                      </Link>
 
-                      {/* Card Image Slide Arrows */}
+                      {/* Card Image Slide Arrows (Desktop/Tablet) */}
                       {allImages.length > 1 && (
-                        <>
+                        <div className="d-none d-sm-block">
                           <button
                             type="button"
                             className="product-card-arrow-btn prev"
@@ -693,12 +688,12 @@ const Product = () => {
                           >
                             <i className="bi bi-chevron-right"></i>
                           </button>
-                        </>
+                        </div>
                       )}
                       
-                      {/* Quick View on Hover (Exact Pill Button) */}
+                      {/* Quick View on Hover (Desktop only) */}
                       <div
-                        className="product-quickview-overlay"
+                        className="product-quickview-overlay d-none d-md-flex"
                         onClick={() => openQuickView(item)}
                         title="Click to Quick View"
                       >
@@ -715,23 +710,23 @@ const Product = () => {
                       </div>
                     </div>
 
-                    {/* Content Section - Modern E-commerce Redesign */}
+                    {/* Content Section */}
                     <div className="product-card-details d-flex flex-column text-start">
                       {/* Top Meta: Category Pill + Stock Status */}
-                      <div className="d-flex align-items-center justify-content-between gap-2 mb-2">
-                        <span className="product-cat-pill">
+                      <div className="d-flex align-items-center justify-content-between gap-1 mb-1 mb-sm-2">
+                        <span className="product-cat-pill text-truncate" title={catName}>
                           {catName}
                         </span>
-                        <div className="stock-status-wrap">
+                        <div className="stock-status-wrap flex-shrink-0">
                           {item.stockstatus === 'In Stock' || item.stockstatus === 'active' || item.inStock !== false ? (
                             <>
                               <span className="stock-dot in-stock"></span>
-                              <span className="text-success">In Stock</span>
+                              <span className="text-success d-none d-sm-inline">In Stock</span>
                             </>
                           ) : (
                             <>
                               <span className="stock-dot out-of-stock"></span>
-                              <span className="text-danger">{item.stockstatus || 'Out of Stock'}</span>
+                              <span className="text-danger d-none d-sm-inline">{item.stockstatus || 'Out'}</span>
                             </>
                           )}
                         </div>
@@ -747,8 +742,6 @@ const Product = () => {
                         </Link>
                       </h6>
 
-
-
                       {/* Pricing & Action Buttons */}
                       <div className="mt-auto">
                         <div className="product-pricing-bar">
@@ -761,14 +754,14 @@ const Product = () => {
                             </span>
                           )}
                           {discountPercent > 0 && (
-                            <span className="product-discount-pill">
+                            <span className="product-discount-pill d-none d-sm-inline-block">
                               {discountPercent}% OFF
                             </span>
                           )}
                         </div>
 
                         {/* Action Buttons: Add to Cart & Buy Now */}
-                        <div className="d-flex gap-2 w-100 mt-2">
+                        <div className="pro-card-actions d-flex gap-1 gap-sm-2 w-100 mt-2">
                           <button
                             type="button"
                             className="btn product-btn-cart flex-fill"
@@ -781,8 +774,9 @@ const Product = () => {
                             disabled={item.stockstatus === 'Out of Stock'}
                             title="Add to Cart"
                           >
-                            <i className="bi bi-cart-plus fs-6"></i>
-                            <span>Add to Cart</span>
+                            <i className="bi bi-cart-plus"></i>
+                            <span className="d-none d-sm-inline ms-1">Add to Cart</span>
+                            <span className="d-inline d-sm-none ms-1">Cart</span>
                           </button>
                           <button
                             type="button"
@@ -795,8 +789,9 @@ const Product = () => {
                             disabled={item.stockstatus === 'Out of Stock'}
                             title="Buy Now"
                           >
-                            <i className="bi bi-lightning-charge-fill fs-6"></i>
-                            <span>Buy Now</span>
+                            <i className="bi bi-lightning-charge-fill"></i>
+                            <span className="d-none d-sm-inline ms-1">Buy Now</span>
+                            <span className="d-inline d-sm-none ms-1">Buy</span>
                           </button>
                         </div>
                       </div>
