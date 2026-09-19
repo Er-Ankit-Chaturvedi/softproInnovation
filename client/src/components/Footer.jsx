@@ -326,7 +326,7 @@ const Footer = () => {
                     <li className="ft-contact-item">
                       <i className="bi bi-envelope-fill text-primary"></i>
                       <a href="mailto:pushkar.softpro@gmail.com" className="ft-contact-link text-break">
-                        pushkar.softpro@gmail.com
+                        ankitchaturvedi2175@gmail.com
                       </a>
                     </li>
                     <li className="ft-contact-item">
