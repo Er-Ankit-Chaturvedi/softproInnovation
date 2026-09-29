@@ -1,6 +1,14 @@
 const mongoose = require('mongoose');
 const dns = require('dns');
 
+// Use reliable public DNS servers to resolve MongoDB Atlas SRV records
+// (Resolves 'querySrv ECONNREFUSED' errors common on Windows and ISP routers)
+try {
+    dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']);
+} catch (err) {
+    console.warn("Could not set custom DNS servers:", err.message);
+}
+
 // Prefer IPv4 resolution to prevent DNS SRV issues on certain networks
 dns.setDefaultResultOrder('ipv4first');
 

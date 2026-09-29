@@ -1,5 +1,13 @@
-const express= require('express')
-const cors = require('cors')
+const dns = require('dns');
+try {
+    dns.setServers(['8.8.8.8', '8.8.4.4', '1.1.1.1']);
+} catch (err) {
+    // Ignore if not supported in environment
+}
+dns.setDefaultResultOrder('ipv4first');
+
+const express = require('express');
+const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
 dotenv.config({ path: path.join(__dirname, '.env'), quiet: true, override: true });
@@ -33,6 +41,15 @@ app.use('/api/address', require('./routes/AddressRoutes'));
 app.use('/api/order', require('./routes/OrderRoutes'));
 app.use('/api/payment', require('./routes/razorpayRoute'));
 
-app.listen(process.env.PORT || 5000, () => {
-    console.log(`Server is running on port ${process.env.PORT || 5000}`);
+const PORT = process.env.PORT || 5000;
+const server = app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
+
+server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+        console.error(`❌ Port ${PORT} is already in use by another process. Please terminate the process using port ${PORT} or configure a different PORT in .env.`);
+    } else {
+        console.error('❌ Server error:', err.message);
+    }
 });
